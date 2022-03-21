@@ -3,6 +3,7 @@ const morgan = require('morgan');
 
 const app = express();
 const userRoutes = require('./routes/userRoutes');
+const carRoutes = require('./routes/carRoutes')
 const globalErrorHandler = require('./controllers/erorcontroller');
 
 if (process.env.NODE_ENV === 'development') {
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/car', carRoutes); // hiep add
 
 app.use('*', (req, res, next) => {
     res.status(404).send('Not Found');

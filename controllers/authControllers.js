@@ -1,3 +1,4 @@
+const { promisify } = require('util'); // promisify will return a function that return a promise
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
@@ -68,11 +69,75 @@ exports.logOut = (req, res) => {
     });
 };
 
+exports.protect = catchAsync(async (req, res, next) => {
+    let token;
+    // console.log(req.headers.authorization);
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
+    }
+    if (!token) {
+        return next(new AppError('You are not logged in! Please log in to get access', 401));
+    }
+
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    // console.log(decoded);
+
+    //3) check if user still exists
+    const freshUser = await User.findById(decoded.id);
+    if (!freshUser) {
+        return next(new AppError('The user belonging to this token does no longer exist', 401));
+    }
+
+    //4) check if user changed password after the token was issued
+    // note - UPDATE LATER
+
+    req.user = freshUser;
+    next();
+
+    // res.json({ status: 'protect route', token, freshUser });
+});
+
+exports.restrictTo =
+    (...role) =>
+    (req, res, next) => {
+        if (!role.includes(req.user.role)) {
+            return next(new AppError('You do not have permission to perform this action', 403));
+        }
+        next();
+    };
+
+exports.updatePasswords = catchAsync(async (req, res, next) => {
+    //1) Get user form the collection
+    const user = await User.findById(req.user.id).select('+password');
+
+    //2) Check if POSTed current password is correct
+    const check = await user.correctPassword(req.body.currentPassword, user.password);
+    if (!check) return next(new AppError('Your current password is incorrect', 401));
+
+    //3) If so, update password
+    // user.password = req.body.newPassword;
+    // user.passwordConfirmation = req.body.passwordConfirmation;
+    // await user.save(); // save to run middleware pre 'save' to crypt password
+
+    // //4) Log in user, send JWT
+    // createAndSendToken(user, 200, res);
+});
+
+exports.getMe = catchAsync(async (req, res, next) => {
+    res.json({
+        status: 'Get Me successfully',
+        user: req.user,
+    });
+});
+
 exports.getUser = catchAsync(async (req, res, next) => {
     const user = await User.find({
         _id: req.body.id,
     });
     res.json({
+        status: 'Get User successfully',
         user,
     });
 });

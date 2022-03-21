@@ -16,6 +16,19 @@ router.get('/', (req, res) => {
 router.post('/signup', authControllers.signUp);
 router.post('/logIn', authControllers.logIn);
 router.get('/logOut', authControllers.logOut);
+
+// Because middle run in sequence, we use PROTECT middleware to protect all rote after this line.
+
+// User must login to access route
+//------ PROTECTED ROUTES --------
+router.use(authControllers.protect);
+
+router.get('/getMe', authControllers.getMe);
+router.post('/updatePassword', authControllers.updatePasswords);
+
+// --- RESTRICT TO ADMIN ---
+router.use(authControllers.restrictTo('admin'));
+
 router.get('/getUser', authControllers.getUser);
 router.get('/getAllUser', authControllers.getAllUser);
 

@@ -1,0 +1,47 @@
+{
+  "name": "vpseven",
+  "version": "1.0.0",
+  "description": "learning nodejs, express, mongodb, react",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon --inspect server.js",
+    "start:prod": "NODE_ENV=production nodemon --inspect server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LCD1502/vp7.git"
+  },
+  "keywords": [
+    "VPseven",
+    "VP7"
+  ],
+  "author": "Team7",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LCD1502/vp7/issues"
+  },
+  "homepage": "https://github.com/LCD1502/vp7#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.7",
+    "mongoose-unique-validator": "^3.0.0",
+    "morgan": "^1.10.0",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "prettier": "^2.6.0"
+  }
+}

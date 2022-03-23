@@ -1,5 +1,5 @@
-const { promisify } = require('util'); // promisify will return a function that return a promise
 const jwt = require('jsonwebtoken');
+const { promisify } = require('util'); // promisify will return a function that return a promise
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');

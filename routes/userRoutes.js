@@ -32,5 +32,7 @@ router.use(authControllers.restrictTo('admin'));
 
 router.get('/getUser', userControllers.getUser);
 router.get('/getAllUser', userControllers.getAllUser);
+router.get('/getUser', authControllers.getUser);
+router.get('/getAllUser', authControllers.getAllUser);
 
 module.exports = router;

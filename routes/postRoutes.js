@@ -9,9 +9,9 @@ router.use((req, res, next) => {
     next();
 });
 
-router.get('/',postControllers.getAllPosts);
-router.post('/', authControllers.protect,postControllers.createOnePost);
-router.put('/:postId', authControllers.protect,postControllers.updateOnePost);
-router.delete('/:postId',authControllers.protect, postControllers.deleteOnePost)
+router.get('/', postControllers.getAllPosts);
+router.post('/', authControllers.protect, authControllers.restrictTo('admin','manager'), postControllers.createOnePost);
+router.put('/:postId', authControllers.protect,authControllers.restrictTo('admin','manager'), postControllers.updateOnePost);
+router.delete('/:postId', authControllers.protect,authControllers.restrictTo('admin','manager'), postControllers.deleteOnePost)
 
 module.exports = router;

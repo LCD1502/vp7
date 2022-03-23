@@ -117,34 +117,17 @@ exports.updatePasswords = catchAsync(async (req, res, next) => {
     if (!check) return next(new AppError('Your current password is incorrect', 401));
 
     //3) If so, update password
-    // user.password = req.body.newPassword;
-    // user.passwordConfirmation = req.body.passwordConfirmation;
-    // await user.save(); // save to run middleware pre 'save' to crypt password
+    user.password = req.body.newPassword;
+    user.passwordConfirmation = req.body.passwordConfirmation;
+    await user.save(); // save to run middleware pre 'save' to crypt password
 
-    // //4) Log in user, send JWT
-    // createAndSendToken(user, 200, res);
+    //4) Log in user, send JWT
+    createAndSendToken(user, 200, res);
 });
 
 exports.getMe = catchAsync(async (req, res, next) => {
     res.json({
         status: 'Get Me successfully',
         user: req.user,
-    });
-});
-
-exports.getUser = catchAsync(async (req, res, next) => {
-    const user = await User.find({
-        _id: req.body.id,
-    });
-    res.json({
-        status: 'Get User successfully',
-        user,
-    });
-});
-
-exports.getAllUser = catchAsync(async (req, res, next) => {
-    const users = await User.find();
-    res.json({
-        users,
     });
 });

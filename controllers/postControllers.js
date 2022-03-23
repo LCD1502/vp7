@@ -3,12 +3,12 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getAllPosts = catchAsync(async (req, res, next) => {
-    const post = await Post.find({}).populate('author','name').select('content createdAt author');
+    const post = await Post.find({}).populate('author', 'name').select('content createdAt author');
     res.status(200).json({
         status: 'success',
         results: post.length,
-        data: { post }
-    })
+        data: { post },
+    });
 });
 
 exports.createOnePost = catchAsync(async (req, res, next) => {
@@ -18,7 +18,7 @@ exports.createOnePost = catchAsync(async (req, res, next) => {
     const post = await Post.create({ ...req.body, author: id });
     res.status(200).json({
         status: 'success',
-        data: post
+        data: post,
     });
 });
 
@@ -28,7 +28,7 @@ exports.updateOnePost = catchAsync(async (req, res, next) => {
     const post = await Post.findByIdAndUpdate(postId, { ...req.body }, { new: true, runValidator: true });
     res.status(200).json({
         status: 'success',
-        data: post
+        data: post,
     });
 });
 
@@ -38,6 +38,6 @@ exports.deleteOnePost = catchAsync(async (req, res, next) => {
     const post = await Post.findByIdAndDelete(postId);
     res.status(200).json({
         status: 'success',
-        massage: 'post has been delete'
+        massage: 'post has been delete',
     });
 });

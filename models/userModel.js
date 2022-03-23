@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
         select: false,
     },
 });
-userSchema.plugin(uniqueValidator);
+// userSchema.plugin(uniqueValidator);
 
 // middleware to crypt password
 userSchema.pre('save', async function (next) {

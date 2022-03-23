@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const authControllers = require('../controllers/authControllers');
+const userControllers = require('../controllers/userController');
 
 // middleware that is specific to this router
 router.use((req, res, next) => {
@@ -29,6 +30,8 @@ router.post('/updatePassword', authControllers.updatePasswords);
 // --- RESTRICT TO ADMIN ---
 router.use(authControllers.restrictTo('admin'));
 
+router.get('/getUser', userControllers.getUser);
+router.get('/getAllUser', userControllers.getAllUser);
 router.get('/getUser', authControllers.getUser);
 router.get('/getAllUser', authControllers.getAllUser);
 

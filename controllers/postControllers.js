@@ -7,8 +7,8 @@ exports.getAllPosts = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         results: post.length,
-        data: { post }
-    })
+        data: { post },
+    });
 });
 
 exports.createOnePost = catchAsync(async (req, res, next) => {
@@ -18,7 +18,7 @@ exports.createOnePost = catchAsync(async (req, res, next) => {
     const post = await Post.create({ ...req.body, author: id });
     res.status(200).json({
         status: 'success',
-        data: post
+        data: post,
     });
 });
 
@@ -28,7 +28,7 @@ exports.updateOnePost = catchAsync(async (req, res, next) => {
     const post = await Post.findByIdAndUpdate(postId, { ...req.body }, { new: true, runValidator: true });
     res.status(200).json({
         status: 'success',
-        data: post
+        data: post,
     });
 });
 
@@ -38,6 +38,6 @@ exports.deleteOnePost = catchAsync(async (req, res, next) => {
     const post = await Post.findByIdAndDelete(postId);
     res.status(200).json({
         status: 'success',
-        message: 'post has been delete'
+        message: 'post has been delete',
     });
 });

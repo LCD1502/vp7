@@ -1,6 +1,7 @@
 const AccessoryBill = require('../models/accessoryBillModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const User = require('../models/userModel');
 
 exports.getUserAccessoryBill = catchAsync(async (req, res, next) => {
     const { id } = req.user;
@@ -15,9 +16,14 @@ exports.getUserAccessoryBill = catchAsync(async (req, res, next) => {
 });
 
 
-exports.createOneAccessoryBill = catchAsync(async (req, res, next) => {
+exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
     const { id } = req.user;
-    const accessoryBill = await AccessoryBill.create({ ...req.body, userId: id });
+    const user = await User.find({ _id: id });// lay user
+    const accessoryBill = await AccessoryBill.create({ accessoryinfo: user.cart, userId: id });// them cart vao bill
+
+    //xoa cart trong user:
+    const del = await User.findOneAndUpdate(id, { cart: [] })
+
     res.status(200).json({
         status: 'success',
         data: accessoryBill

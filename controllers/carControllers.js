@@ -36,6 +36,6 @@ exports.deleteOneCar = catchAsync(async (req, res, next) => {
     const car = await Car.findByIdAndDelete(carId);
     res.status(200).json({
         status: 'success',
-        massage: 'car has been delete'
+        message: 'car has been delete'
     });
 });

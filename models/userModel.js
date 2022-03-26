@@ -64,8 +64,12 @@ const userSchema = new mongoose.Schema({
     },
     cart: [
         {
-            type: mongoose.Schema.ObjectId,
-            ref: 'Accessory',
+            itemId: {
+                type: mongoose.Schema.ObjectId,
+                ref: 'Accessory',
+                unique: true,
+            },
+            quantity: Number,
         },
     ],
     wishList: {

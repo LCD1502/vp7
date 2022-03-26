@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const accessoryBillSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     accessoryInfo: [{
-        accessoryId:{ type: mongoose.Schema.Types.ObjectId, ref: 'Accessory' },
-        accessoryAmount:{ type: Number, required: [true, 'Accessory must have amount'], },
+        itemId:{ type: mongoose.Schema.Types.ObjectId, ref: 'Accessory' },
+        quantity:{ type: Number, required: [true, 'Accessory must have amount'], },
     }],
     totalPrice: {
         type: Number,

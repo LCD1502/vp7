@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const uniqueValidator = require('mongoose-unique-validator');
+// const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
@@ -50,6 +50,37 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
         select: false,
+    },
+    info: {
+        dateOfBirth: {
+            type: Date,
+            required: [true, 'Please enter your birth date'],
+        },
+        gender: {
+            type: String,
+            enum: ['male', 'female'],
+        },
+        phoneNumber: String,
+    },
+    cart: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Accessory',
+        },
+    ],
+    wishList: {
+        cars: [
+            {
+                type: mongoose.Schema.ObjectId,
+                ref: 'Car',
+            },
+        ],
+        accessories: [
+            {
+                type: mongoose.Schema.ObjectId,
+                ref: 'Accessory',
+            },
+        ],
     },
 });
 // userSchema.plugin(uniqueValidator);

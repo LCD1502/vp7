@@ -36,6 +36,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
         email: req.body.email,
         password: req.body.password,
         passwordConfirmation: req.body.passwordConfirmation,
+        info: req.body.info,
     });
     createAndSendToken(user, 201, res);
 });
@@ -123,11 +124,4 @@ exports.updatePasswords = catchAsync(async (req, res, next) => {
 
     //4) Log in user, send JWT
     createAndSendToken(user, 200, res);
-});
-
-exports.getMe = catchAsync(async (req, res, next) => {
-    res.json({
-        status: 'Get Me successfully',
-        user: req.user,
-    });
 });

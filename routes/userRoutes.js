@@ -24,8 +24,10 @@ router.get('/logOut', authControllers.logOut);
 //------ PROTECTED ROUTES --------
 router.use(authControllers.protect);
 
-router.get('/getMe', authControllers.getMe);
 router.post('/updatePassword', authControllers.updatePasswords);
+router.get('/getMe', userControllers.getMe);
+router.patch('/updateInfo', userControllers.updateInfo);
+router.patch('/updateCart', userControllers.updateCart);
 
 // --- RESTRICT TO ADMIN ---
 router.use(authControllers.restrictTo('admin'));

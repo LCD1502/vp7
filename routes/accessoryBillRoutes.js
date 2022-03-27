@@ -10,11 +10,26 @@ router.use((req, res, next) => {
 });
 
 //user get and create bill
-router.get('/',  authControllers.protect, authControllers.restrictTo('user','admin','manager'),accessoryBillControllers.getUserAccessoryBill);
-router.post('/', authControllers.protect, authControllers.restrictTo('user','admin','manager'), accessoryBillControllers.createUserAccessoryBill);
+router.get(
+    '/',
+    authControllers.protect,
+    authControllers.restrictTo('user', 'admin', 'manager'),
+    accessoryBillControllers.getUserAccessoryBill
+);
+router.post(
+    '/',
+    authControllers.protect,
+    authControllers.restrictTo('user', 'admin', 'manager'),
+    accessoryBillControllers.createUserAccessoryBill
+);
 
 //admin and mamager bill
-router.get('/all', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryBillControllers.getAllAccessoryBills);
+router.get(
+    '/all',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    accessoryBillControllers.getAllAccessoryBills
+);
 // router.post('/', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryBillControllers.createOneAccessoryBill);
 // router.put('/:accessoryId', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryBillControllers.updateOneAccessoryBill);
 // router.delete('/:accessoryId', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryBillControllers.deleteOneAccessoryBill)

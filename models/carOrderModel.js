@@ -1,23 +1,23 @@
 const mongoose = require('mongoose')
 
 const carOrderScheme = mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     carInfo: [
         {
             _id: false,
-            carId: { type: mongoose.Schema.Types.ObjectId, ref: 'Car'}
+            carId: { type: mongoose.Schema.Types.ObjectId, ref: 'Car' }
         }
     ],
-    time: { 
-        type: Date, 
+    time: {
+        type: Date,
         default: Date.now,
         required: [true, 'Car Order must have time']
     },
-    place: { 
+    place: {
         type: mongoose.Schema.Types.ObjectId, ref: 'showRoom',
         required: [true, 'Car Order must have the place to meet']
     },
-    deposit: { 
+    deposit: {
         type: Number,
         required: [true, 'Car Order must have deposit'],
     },
@@ -26,5 +26,6 @@ const carOrderScheme = mongoose.Schema({
         default: 'Pending',
         required: [true, 'Car Order must have the status'],
     }
-
 })
+const CarOrder = mongoose.model('CarOrder', carOrderScheme)
+module.exports = CarOrder

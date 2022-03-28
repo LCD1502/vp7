@@ -11,7 +11,7 @@ const carOrderScheme = mongoose.Schema({
     time: {
         type: Date,
         default: Date.now,
-        required: [true, 'Car Order must have time']
+        required: [true, 'Car Order must have time to meet']
     },
     place: {
         type: mongoose.Schema.Types.ObjectId, ref: 'showRoom',

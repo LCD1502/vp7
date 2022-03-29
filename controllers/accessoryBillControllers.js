@@ -17,6 +17,10 @@ exports.getUserAccessoryBill = catchAsync(async (req, res, next) => {
 
 exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
     // bởi vì hàm protect đã lấy user từ database rồi, nên chính xác là user hiện tại, không cần get lại
+    // kiem tra cart
+    if(req.user.cart[0]==undefined){
+        return next(new AppError('Can not create accessory bill because Cart is empty', 400));
+    }
     const accessoryBill = await AccessoryBill.create({
         userId: req.user.id,
         accessoryInfo: req.user.cart,
@@ -43,35 +47,26 @@ exports.getAllAccessoryBills = catchAsync(async (req, res, next) => {
     });
 });
 
-// exports.createOneAccessory = catchAsync(async (req, res, next) => {
-//     //const { userId } = req.user;
-//     const accessory = await Accessory.create({ ...req.body });
-//     res.status(200).json({
-//         status: 'success',
-//         data: accessory
-//     });
-// });
-
 exports.updateOneAccessoryBill = catchAsync(async (req, res, next) => {
-    const { accessoryId } = req.params;
+    const { accessoryBillId } = req.params;
     //const {userId} = req.user; nhận userID nếu cần
-    const accessory = await Accessory.findByIdAndUpdate(
-        accessoryId,
+    const accessoryBill = await AccessoryBill.findByIdAndUpdate(
+        accessoryBillId,
         { ...req.body },
         { new: true, runValidator: true }
     );
     res.status(200).json({
         status: 'success',
-        data: accessory,
+        accessoryBill,
     });
 });
 
 exports.deleteOneAccessoryBill = catchAsync(async (req, res, next) => {
-    const { accessoryId } = req.params;
+    const { accessoryBillId } = req.params;
     //const {userId} = req.user; nhận userID nếu cần
-    const accessory = await Accessory.findByIdAndDelete(accessoryId);
+    const accessoryBill = await AccessoryBill.findByIdAndDelete(accessoryBillId);
     res.status(200).json({
         status: 'success',
-        message: 'accessory has been delete',
+        message: 'accessory bill has been delete',
     });
 });

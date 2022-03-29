@@ -69,11 +69,11 @@ const userSchema = new mongoose.Schema({
         {
             _id: false,
             itemId: {
-                type: mongoose.Schema.ObjectId,
+                type: mongoose.Schema.Types.ObjectId,
                 ref: 'Accessory',
             },
             quantity: Number,
-        },
+        }
     ],
     wishList: {
         cars: [

@@ -52,6 +52,9 @@ const userSchema = new mongoose.Schema({
         select: false,
     },
     info: {
+        address: {
+            type: String,
+        },
         dateOfBirth: {
             type: Date,
             required: [true, 'Please enter your birth date'],
@@ -64,10 +67,10 @@ const userSchema = new mongoose.Schema({
     },
     cart: [
         {
+            _id: false,
             itemId: {
                 type: mongoose.Schema.ObjectId,
                 ref: 'Accessory',
-                unique: true,
             },
             quantity: Number,
         },
@@ -75,14 +78,18 @@ const userSchema = new mongoose.Schema({
     wishList: {
         cars: [
             {
+                _id: false,
                 type: mongoose.Schema.ObjectId,
                 ref: 'Car',
+                unique: true,
             },
         ],
         accessories: [
             {
+                _id: false,
                 type: mongoose.Schema.ObjectId,
                 ref: 'Accessory',
+                unique: true,
             },
         ],
     },

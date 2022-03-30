@@ -54,7 +54,7 @@ exports.updateCart = catchAsync(async (req, res, next) => {
     await currentUser.updateOne({
         id: req.user.id,
         cart: req.body.cart,
-    });
+    },{ new: true, runValidator: true });
 
     const updatedUser = await User.findById(req.user.id);
     res.json({ status: 'success', user: updatedUser });

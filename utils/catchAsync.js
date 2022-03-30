@@ -3,3 +3,11 @@ module.exports = function (fn) {
         fn(req, res, next).catch(next);
     };
 };
+
+
+/* Try {
+    fn(reg,res ,next)
+} catch (err) {
+    next(err)
+}
+*/

@@ -7,7 +7,7 @@ const Accessory = require('../models/accessoryModel');
 exports.getUser = catchAsync(async (req, res, next) => {
     const user = await User.find({
         _id: req.body.id,
-    });
+    }).select('+active');
     res.json({
         status: 'Get User successfully',
         user,
@@ -15,7 +15,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllUser = catchAsync(async (req, res, next) => {
-    const users = await User.find();
+    const users = await User.find().select('+active');
     res.json({
         users,
     });
@@ -47,21 +47,38 @@ exports.updateInfo = catchAsync(async (req, res, next) => {
 });
 
 exports.updateCart = catchAsync(async (req, res, next) => {
-    console.log(req.body.cart);
-    const currentUser = await User.findById(req.user.id);
-    if (!currentUser) return next(new AppError('No User found with this ID', 404));
+    // console.log(req.body.cart);
+    const updatedUser = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+            cart: req.body.cart,
+        },
+        { new: true, runValidator: true }
+    );
+    if (!updatedUser) return next(new AppError('No User found with this ID', 404));
+    res.json({
+        status: 'update cart successfully',
+        updatedUser,
+    });
+});
 
-    await currentUser.updateOne({
-        id: req.user.id,
-        cart: req.body.cart,
-    },{ new: true, runValidator: true });
-
-    const updatedUser = await User.findById(req.user.id);
-    res.json({ status: 'success', user: updatedUser });
+exports.updateWishlist = catchAsync(async (req, res, next) => {
+    const updatedUser = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+            wishList: req.body.wishList,
+        },
+        { new: true, runValidator: true }
+    );
+    if (!updatedUser) return next(new AppError('No User found with this ID', 404));
+    res.json({
+        status: 'update wishList successfully',
+        updatedUser,
+    });
 });
 
 exports.testFilter = catchAsync(async (req, res, next) => {
-    console.log(req.query);
+    // console.log(req.query);
     const features = new APIFeatures(Accessory.find(), req.query).filter().sort().limitFields().paginate();
     const docs = await features.query;
     res.json({

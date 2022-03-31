@@ -28,6 +28,7 @@ router.post('/updatePassword', authControllers.updatePasswords);
 router.get('/getMe', userControllers.getMe);
 router.patch('/updateInfo', userControllers.updateInfo);
 router.patch('/updateCart', userControllers.updateCart);
+router.patch('/updateWishlist', userControllers.updateWishlist);
 router.get('/testFilter', userControllers.testFilter);
 
 // --- RESTRICT TO ADMIN ---
@@ -35,5 +36,5 @@ router.use(authControllers.restrictTo('admin'));
 
 router.get('/getUser', userControllers.getUser);
 router.get('/getAllUser', userControllers.getAllUser);
-
+router.patch('/toggleUser/:id', authControllers.toggleUser);
 module.exports = router;

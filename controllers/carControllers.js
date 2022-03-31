@@ -3,12 +3,12 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getAllCars = catchAsync(async (req, res, next) => {
-    const car = await Car.find({}) //.populate('author','name').select('content createdAt');
+    const car = await Car.find({}); //.populate('author','name').select('content createdAt');
     res.status(200).json({
         status: 'success',
         results: car.length,
-        data: { car }
-    })
+        data: { car },
+    });
 });
 
 exports.createOneCar = catchAsync(async (req, res, next) => {
@@ -16,7 +16,7 @@ exports.createOneCar = catchAsync(async (req, res, next) => {
     const car = await Car.create({ ...req.body });
     res.status(200).json({
         status: 'success',
-        data: car
+        data: car,
     });
 });
 
@@ -26,7 +26,7 @@ exports.updateOneCar = catchAsync(async (req, res, next) => {
     const car = await Car.findByIdAndUpdate(carId, { ...req.body }, { new: true, runValidator: true });
     res.status(200).json({
         status: 'success',
-        data: car
+        data: car,
     });
 });
 
@@ -36,6 +36,19 @@ exports.deleteOneCar = catchAsync(async (req, res, next) => {
     const car = await Car.findByIdAndDelete(carId);
     res.status(200).json({
         status: 'success',
-        message: 'car has been delete'
+        message: 'car has been delete',
+    });
+});
+
+exports.compareTwoCars = catchAsync(async (req, res, next) => {
+    const car1 = await Car.findById(req.body.carId1);
+    const car2 = await Car.findById(req.body.carId2);
+    if (!car1 || !car2) return next(new AppError('No Car found with this ID', 404));
+    res.json({
+        status: 'get data of two cars successfully',
+        data: {
+            car1,
+            car2,
+        },
     });
 });

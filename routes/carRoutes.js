@@ -10,12 +10,22 @@ router.use((req, res, next) => {
 });
 
 router.get('/', carControllers.getAllCars);
-router.post('/', authControllers.protect, authControllers.restrictTo('admin','manager'), carControllers.createOneCar);
-router.put('/:carId', authControllers.protect, authControllers.restrictTo('admin','manager'), carControllers.updateOneCar);
-router.delete('/:carId', authControllers.protect, authControllers.restrictTo('admin','manager'), carControllers.deleteOneCar)
+router.get('/compareTwoCars', carControllers.compareTwoCars);
+router.post('/', authControllers.protect, authControllers.restrictTo('admin', 'manager'), carControllers.createOneCar);
+router.put(
+    '/:carId',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    carControllers.updateOneCar
+);
+router.delete(
+    '/:carId',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    carControllers.deleteOneCar
+);
 
 //router.put('/updateOneCar', carControllers.updateOneCar);
 //router.delete('/deleteOneCar', carControllers.deleteOneCar);
-
 
 module.exports = router;

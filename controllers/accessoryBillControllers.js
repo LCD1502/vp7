@@ -53,25 +53,25 @@ exports.getAllAccessoryBills = catchAsync(async (req, res, next) => {
 // });
 
 exports.updateOneAccessoryBill = catchAsync(async (req, res, next) => {
-    const { accessoryId } = req.params;
-    //const {userId} = req.user; nhận userID nếu cần
-    const accessory = await Accessory.findByIdAndUpdate(
-        accessoryId,
-        { ...req.body },
+    const updatedAccessory = await AccessoryBill.findByIdAndUpdate(
+        req.params.accessoryId,
+        {
+            status: req.body.status,
+        },
         { new: true, runValidator: true }
     );
+    if (!updatedAccessory) return next(new AppError('No Bill found', 404, 'Not Found'));
     res.status(200).json({
-        status: 'success',
-        data: accessory,
+        updatedAccessory,
     });
 });
 
-exports.deleteOneAccessoryBill = catchAsync(async (req, res, next) => {
-    const { accessoryId } = req.params;
-    //const {userId} = req.user; nhận userID nếu cần
-    const accessory = await Accessory.findByIdAndDelete(accessoryId);
-    res.status(200).json({
-        status: 'success',
-        message: 'accessory has been delete',
-    });
-});
+// exports.deleteOneAccessoryBill = catchAsync(async (req, res, next) => {
+//     const { accessoryId } = req.params;
+//     //const {userId} = req.user; nhận userID nếu cần
+//     const accessory = await Accessory.findByIdAndDelete(accessoryId);
+//     res.status(200).json({
+//         status: 'success',
+//         message: 'accessory has been delete',
+//     });
+// });

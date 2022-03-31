@@ -10,8 +10,23 @@ router.use((req, res, next) => {
 });
 
 router.get('/', showRoomControllers.getAllShowRooms);
-router.post('/', authControllers.protect, authControllers.restrictTo('admin', 'manager'), showRoomControllers.createOneShowRoom);
-router.put('/:showRoomId', authControllers.protect, authControllers.restrictTo('admin', 'manager'), showRoomControllers.updateOneShowRoom);
-router.delete('/:showRoomId', authControllers.protect, authControllers.restrictTo('admin', 'manager'), showRoomControllers.deleteOneShowRoom)
+router.post(
+    '/',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    showRoomControllers.createOneShowRoom
+);
+router.put(
+    '/:showRoomId',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    showRoomControllers.updateOneShowRoom
+);
+router.delete(
+    '/:showRoomId',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    showRoomControllers.deleteOneShowRoom
+);
 
 module.exports = router;

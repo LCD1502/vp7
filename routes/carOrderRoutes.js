@@ -1,33 +1,41 @@
-const express =require("express")
+const express = require('express');
 
-const router = express.Router()
-const carOrderControllers = require('../controllers/carOrderController')
-const authControllers = require('../controllers/authControllers')
+const router = express.Router();
+const carOrderControllers = require('../controllers/carOrderController');
+const authControllers = require('../controllers/authControllers');
 
 router.use((req, res, next) => {
     console.log('time: ', Date.now());
-    next()
-})
+    next();
+});
 
 router.get(
     '/',
     authControllers.protect,
     authControllers.restrictTo('user', 'admin', 'manager'),
-    carOrderControllers.getCarOrder,
-)
+    carOrderControllers.getCarOrder
+);
 
 router.post(
-    '/', 
-    authControllers.protect, 
-    authControllers.restrictTo('user', 'admin','manager'),
-    carOrderControllers.createCarOrder,
-)
+    '/',
+    authControllers.protect,
+    authControllers.restrictTo('user', 'admin', 'manager'),
+    carOrderControllers.createCarOrder
+);
 
-// admin and manager 
+// admin and manager
 router.get(
     '/all',
-    authControllers.protect, 
+    authControllers.protect,
     authControllers.restrictTo('admin', 'manager'),
     carOrderControllers.getAllCarOrder
-)
+);
 
+router.patch(
+    '/updateCarOrder',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    carOrderControllers.updateCarOrder
+);
+
+module.exports = router;

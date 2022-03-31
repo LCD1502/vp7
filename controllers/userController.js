@@ -1,6 +1,8 @@
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const APIFeatures = require('../utils/apiFeatures');
+const Accessory = require('../models/accessoryModel');
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const user = await User.find({
@@ -56,4 +58,15 @@ exports.updateCart = catchAsync(async (req, res, next) => {
 
     const updatedUser = await User.findById(req.user.id);
     res.json({ status: 'success', user: updatedUser });
+});
+
+exports.testFilter = catchAsync(async (req, res, next) => {
+    console.log(req.query);
+    const features = new APIFeatures(Accessory.find(), req.query).filter().sort().limitFields().paginate();
+    const docs = await features.query;
+    res.json({
+        status: 'success',
+        results: docs.length,
+        docs,
+    });
 });

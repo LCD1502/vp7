@@ -10,8 +10,23 @@ router.use((req, res, next) => {
 });
 
 router.get('/', postControllers.getAllPosts);
-router.post('/', authControllers.protect, authControllers.restrictTo('admin','manager'), postControllers.createOnePost);
-router.put('/:postId', authControllers.protect,authControllers.restrictTo('admin','manager'), postControllers.updateOnePost);
-router.delete('/:postId', authControllers.protect,authControllers.restrictTo('admin','manager'), postControllers.deleteOnePost)
+router.post(
+    '/',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    postControllers.createOnePost
+);
+router.put(
+    '/:postId',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    postControllers.updateOnePost
+);
+router.delete(
+    '/:postId',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    postControllers.deleteOnePost
+);
 
 module.exports = router;

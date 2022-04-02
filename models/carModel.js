@@ -57,8 +57,8 @@ const carSchema = new mongoose.Schema({
         weight: { type: Number }, // tải trọng
     },
     color: {
-        type: String,
-        enum: ['red', 'blue', 'white', 'black'],
+        type: [],
+        default: ['black', 'white'],
     },
     special: {
         // đặc điểm chức năng đặc biệt

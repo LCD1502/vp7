@@ -4,7 +4,7 @@
     "description": "learning nodejs, express, mongodb, react",
     "main": "app.js",
     "scripts": {
-        "start": "nodemon --inspect server.js",
+        "start": "node server.js",
         "start:prod": "NODE_ENV=production nodemon --inspect server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

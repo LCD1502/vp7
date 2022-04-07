@@ -66,12 +66,12 @@ exports.updateOneAccessoryBill = catchAsync(async (req, res, next) => {
     });
 });
 
-// exports.deleteOneAccessoryBill = catchAsync(async (req, res, next) => {
-//     const { accessoryId } = req.params;
-//     //const {userId} = req.user; nhận userID nếu cần
-//     const accessory = await Accessory.findByIdAndDelete(accessoryId);
-//     res.status(200).json({
-//         status: 'success',
-//         message: 'accessory has been delete',
-//     });
-// });
+exports.deleteOneAccessoryBill = catchAsync(async (req, res, next) => {
+    const { accessoryId } = req.params;
+    //const {userId} = req.user; nhận userID nếu cần
+    const accessory = await AccessoryBill.findByIdAndDelete(accessoryId);
+    res.status(200).json({
+        status: 'success',
+        message: 'Accessory bill has been delete',
+    });
+});

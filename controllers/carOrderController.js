@@ -52,3 +52,13 @@ exports.updateCarOrder = catchAsync(async (req, res, next) => {
         updatedOrder,
     });
 });
+
+exports.deleteCarOrder = catchAsync(async (req, res, next) => {
+    const { carOrderId } = req.params;
+    //const {userId} = req.user; nhận userID nếu cần
+    const carOrder = await CarOrder.findByIdAndDelete(carOrderId);
+    res.status(200).json({
+        status: 'success',
+        message: 'Car order has been delete'
+    });
+});

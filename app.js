@@ -8,7 +8,7 @@ const postRoutes = require('./routes/postRoutes'); //hiep add postRoutes
 const showRoomRoutes = require('./routes/showRoomRoutes'); //hiep add showRoomRoutes
 const accessoryRoutes = require('./routes/accessoryRoutes'); //hiep add accessoryRoutes
 const accessoryBillRoutes = require('./routes/accessoryBillRoutes'); //hiep add accessoryRoutes
-const carOderRoutes = require('./routes/carOrderRoutes');
+const carOrderRoutes = require('./routes/carOrderRoutes');
 const globalErrorHandler = require('./controllers/erorcontroller');
 
 if (process.env.NODE_ENV === 'development') {
@@ -28,7 +28,7 @@ app.use('/api/v1/post', postRoutes); // hiep add post
 app.use('/api/v1/showRoom', showRoomRoutes); // hiep add showRoom
 app.use('/api/v1/accessory', accessoryRoutes); // hiep add accessory
 app.use('/api/v1/accessory-bill', accessoryBillRoutes); // hiep add accessory bill
-app.use('/api/v1/carOrder', carOderRoutes); // Luong
+app.use('/api/v1/carOrder', carOrderRoutes); // Luong
 //Lương chỉnh sửa sự nhất quán của biến, route trong các API
 app.use('*', (req, res, next) => {
     res.status(404).send('Not Found');

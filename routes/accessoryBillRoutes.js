@@ -31,17 +31,17 @@ router.get(
     accessoryBillControllers.getAllAccessoryBills
 );
 router.patch(
-    '/:accessoryId',
+    '/:accessoryBillId',
     authControllers.protect,
     authControllers.restrictTo('admin', 'manager'),
     accessoryBillControllers.updateOneAccessoryBill
 );
 
 router.delete(
-    '/:deleteAccessory',
+    '/:accessoryBillId',
     authControllers.protect,
     authControllers.restrictTo('admin', 'manager'),
-    carOrderControllers.deleteOneAccessoryBill
+    accessoryBillControllers.deleteOneAccessoryBill
 );
 
 // router.post('/', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryBillControllers.createOneAccessoryBill);

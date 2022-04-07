@@ -28,8 +28,8 @@ app.use('/api/v1/post', postRoutes); // hiep add post
 app.use('/api/v1/showRoom', showRoomRoutes); // hiep add showRoom
 app.use('/api/v1/accessory', accessoryRoutes); // hiep add accessory
 app.use('/api/v1/accessory-bill', accessoryBillRoutes); // hiep add accessory bill
-app.use('/api/v1/carOder', carOderRoutes); // Luong
-
+app.use('/api/v1/carOrder', carOderRoutes); // Luong
+//Lương chỉnh sửa sự nhất quán của biến, route trong các API
 app.use('*', (req, res, next) => {
     res.status(404).send('Not Found');
 });

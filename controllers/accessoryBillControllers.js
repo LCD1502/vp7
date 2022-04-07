@@ -55,24 +55,25 @@ exports.getAllAccessoryBills = catchAsync(async (req, res, next) => {
 // });
 
 exports.updateOneAccessoryBill = catchAsync(async (req, res, next) => {
-    const updatedAccessory = await AccessoryBill.findByIdAndUpdate(
-        req.params.accessoryId,
+    const updatedAccessoryBill = await AccessoryBill.findByIdAndUpdate(
+        req.params.accessoryBillId,
         {
             status: req.body.status,
         },
         { new: true, runValidator: true }
     );
-    if (!updatedAccessory) return next(new AppError('No Bill found', 404, 'Not Found'));
+    if (!updatedAccessoryBill) return next(new AppError('No Bill found', 404, 'Not Found'));
     res.status(200).json({
-        updatedAccessory,
+        updatedAccessoryBill,
     });
 });
 
 exports.deleteOneAccessoryBill = catchAsync(async (req, res, next) => {
-    const { accessoryId } = req.params;
+    const { accessoryBillId } = req.params;
     //const {userId} = req.user; nhận userID nếu cần
-    if (!accessoryId) return next(new Error('Can not found Accessory Bill with this id', 404));
-    const deleteAccessory = await AccessoryBill.findByIdAndDelete(accessoryId);
+    if (!accessoryBillId) return next(new Error('Can not found Accessory Bill with this id', 404));
+    const deleteAccessoryBill = await AccessoryBill.findByIdAndDelete(accessoryBillId);
+    if (!deleteAccessoryBill) return next(new Error('Can delete Accessory bill with this id', 404));
     res.status(200).json({
         status: 'success',
         message: 'Accessory bill has been delete',

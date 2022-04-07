@@ -32,14 +32,14 @@ router.get(
 );
 //Check postman
 router.patch(
-    '/:updateCarOrder',
+    '/:carOrderId',
     authControllers.protect,
     authControllers.restrictTo('admin', 'manager'),
     carOrderControllers.updateCarOrder
 );
 
 router.delete(
-    '/deleteCarOrder',
+    '/:carOrderId',
     authControllers.protect,
     authControllers.restrictTo('admin', 'manager'),
     carOrderControllers.deleteCarOrder

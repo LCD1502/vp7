@@ -36,6 +36,14 @@ router.patch(
     authControllers.restrictTo('admin', 'manager'),
     accessoryBillControllers.updateOneAccessoryBill
 );
+
+router.delete(
+    '/:deleteAccessory',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    carOrderControllers.deleteOneAccessoryBill
+);
+
 // router.post('/', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryBillControllers.createOneAccessoryBill);
 // router.delete('/:accessoryId', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryBillControllers.deleteOneAccessoryBill)
 

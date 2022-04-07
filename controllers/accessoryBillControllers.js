@@ -8,6 +8,7 @@ exports.getUserAccessoryBill = catchAsync(async (req, res, next) => {
     const accessoryBill = await AccessoryBill.find({
         userId: id,
     }); //.populate('accessoryInfo.accessoryId', '_id').select('name');
+    if (!accessoryBill) return next(new AppError('Cannot get Accessory bill', 404, 'Not Found'));
     res.status(200).json({
         status: 'success',
         results: accessoryBill.length,
@@ -23,7 +24,7 @@ exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
         totalPrice: req.body.totalPrice,
         deliveryMethod: req.body.deliveryMethod,
     }); // them cart vao bill
-    if (!accessoryBill) return next(new AppError('Can not create accessoryBill', 400));
+    if (!accessoryBill) return next(new AppError('Can not create accessoryBill', 400, 'Bad Request'));
     //xoa cart trong user:
     await User.findByIdAndUpdate(req.user.id, { cart: [] });
     res.status(201).json({
@@ -35,11 +36,12 @@ exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
 //admin manager  chưa xong
 
 exports.getAllAccessoryBills = catchAsync(async (req, res, next) => {
-    const accessoryBill = await AccessoryBill.find({}); //.populate('author','name').select('content createdAt');
+    const accessoryBills = await AccessoryBill.find({}); //.populate('author','name').select('content createdAt');
+    if (!accessoryBills) return next(new AppError('Cannot load all Accessory Bills', 400, 'Bad Request'));
     res.status(200).json({
         status: 'success',
-        results: accessoryBill.length,
-        data: { accessoryBill },
+        results: accessoryBills.length,
+        data: { accessoryBills },
     });
 });
 
@@ -69,7 +71,8 @@ exports.updateOneAccessoryBill = catchAsync(async (req, res, next) => {
 exports.deleteOneAccessoryBill = catchAsync(async (req, res, next) => {
     const { accessoryId } = req.params;
     //const {userId} = req.user; nhận userID nếu cần
-    const accessory = await AccessoryBill.findByIdAndDelete(accessoryId);
+    if (!accessoryId) return next(new Error('Can not found Accessory Bill with this id', 404));
+    const deleteAccessory = await AccessoryBill.findByIdAndDelete(accessoryId);
     res.status(200).json({
         status: 'success',
         message: 'Accessory bill has been delete',

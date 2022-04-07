@@ -30,12 +30,19 @@ router.get(
     authControllers.restrictTo('admin', 'manager'),
     carOrderControllers.getAllCarOrder
 );
-
+//Check postman
 router.patch(
-    '/updateCarOrder',
+    '/:updateCarOrder',
     authControllers.protect,
     authControllers.restrictTo('admin', 'manager'),
     carOrderControllers.updateCarOrder
+);
+
+router.delete(
+    '/deleteCarOrder',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    carOrderControllers.deleteCarOrder
 );
 
 module.exports = router;

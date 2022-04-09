@@ -11,6 +11,17 @@ exports.getAllCars = catchAsync(async (req, res, next) => {
     })
 });
 
+exports.getOneCar = catchAsync(async (req, res, next) => {
+    const { carId } = req.params;
+    const car = await Car.find({
+        _id:carId
+    }) //.populate('author','name').select('content createdAt');
+    res.status(200).json({
+        status: 'success',
+        data: car
+    })
+});
+
 exports.createOneCar = catchAsync(async (req, res, next) => {
     //const { userId } = req.user;
     const car = await Car.create({ ...req.body });

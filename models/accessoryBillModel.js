@@ -26,5 +26,15 @@ const accessoryBillSchema = new mongoose.Schema({
     },
 });
 
+accessoryBillSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'userId',
+        select: 'name photo email',
+    }).populate({
+        path: 'accessoryInfo.itemId',
+    });
+    next();
+});
+
 const AccessoryBill = mongoose.model('AccessoryBill', accessoryBillSchema);
 module.exports = AccessoryBill;

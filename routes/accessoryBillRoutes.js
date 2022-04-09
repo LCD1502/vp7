@@ -30,12 +30,20 @@ router.get(
     authControllers.restrictTo('admin', 'manager'),
     accessoryBillControllers.getAllAccessoryBills
 );
-router.put(
+router.patch(
     '/:accessoryBillId',
     authControllers.protect,
     authControllers.restrictTo('admin', 'manager'),
     accessoryBillControllers.updateOneAccessoryBill
 );
+
+router.delete(
+    '/:accessoryBillId',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    accessoryBillControllers.deleteOneAccessoryBill
+);
+
 // router.post('/', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryBillControllers.createOneAccessoryBill);
 // router.delete('/:accessoryId', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryBillControllers.deleteOneAccessoryBill)
 

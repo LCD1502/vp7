@@ -1,30 +1,46 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const carOrderScheme = mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    carInfo: [
-        {
-            _id: false,
-            carId: { type: mongoose.Schema.Types.ObjectId, ref: 'Car'}
-        }
-    ],
-    time: { 
-        type: Date, 
-        default: Date.now,
-        required: [true, 'Car Order must have time']
+    userInfo: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: [true, 'Car Order must have owner'] },
+    carInfo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Car',
+        required: [true, 'Car Order must have the info of car'],
     },
-    place: { 
-        type: mongoose.Schema.Types.ObjectId, ref: 'showRoom',
-        required: [true, 'Car Order must have the place to meet']
+    time: {
+        type: Date,
+        required: [true, 'Car Order must have time to meet'],
     },
-    deposit: { 
+    place: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ShowRoom',
+        required: [true, 'Car Order must have the place to meet'],
+    },
+    deposit: {
         type: Number,
         required: [true, 'Car Order must have deposit'],
     },
     status: {
+        type: String,
         enum: ['Pending', 'Success', 'Cancelled'],
         default: 'Pending',
         required: [true, 'Car Order must have the status'],
-    }
+    },
+});
 
-})
+carOrderScheme.pre(/^find/, function (next) {
+    this.populate({
+        path: 'userInfo',
+        select: 'name photo email',
+    })
+        .populate({
+            path: 'carInfo',
+        })
+        .populate({
+            path: 'place',
+        });
+    next();
+});
+
+const CarOrder = mongoose.model('CarOrder', carOrderScheme);
+module.exports = CarOrder;

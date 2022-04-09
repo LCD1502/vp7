@@ -125,3 +125,22 @@ exports.updatePasswords = catchAsync(async (req, res, next) => {
     //4) Log in user, send JWT
     createAndSendToken(user, 200, res);
 });
+
+exports.toggleUser = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.params.id).select('+active');
+    if (!user) return next(new AppError('No User found with this ID', 404));
+    const newUser = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+            active: !user.active,
+        },
+        {
+            new: true,
+        }
+    ).select('+active');
+
+    res.json({
+        status: 'success',
+        newUser,
+    });
+});

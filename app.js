@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+var cors = require("cors");
 
 const app = express();
 const userRoutes = require('./routes/userRoutes');
@@ -15,6 +16,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
@@ -26,7 +28,7 @@ app.all('/', function(req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World frontend');
+    res.send('Hello World frontend again');
 });
 
 app.use('/api/v1/user', userRoutes);

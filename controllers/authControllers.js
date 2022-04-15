@@ -46,20 +46,19 @@ exports.logIn = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
     //1) check if email and password exist
-    ///if (!email || !password) return next(new AppError('Please provide email and password', 400));
+    if (!email || !password) return next(new AppError('Please provide email and password', 400));
     //res.json({ email: email, password: password });
-    res.json('oke')
 
     // 2) check if user exists and password are is correct
-    // const user = await User.findOne({
-    //     email
-    // }).select('+password');
-    // if (!user)
-    //     return next(new AppError('Incorrect email ', 401));
-    // if (!await user.correctPassword(password, user.password))
-    //     return next(new AppError('Incorrect password', 401));
+     const user = await User.findOne({
+         email
+     }).select('+password');
+     if (!user)
+        return next(new AppError('Incorrect email ', 401));
+     if (!await user.correctPassword(password, user.password))
+         return next(new AppError('Incorrect password', 401));
     // // 3) if everything is ok, send token to client
-    // createAndSendToken(user, 200, res);
+     createAndSendToken(user, 200, res);
 });
 
 exports.logOut = (req, res) => {

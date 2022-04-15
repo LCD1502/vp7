@@ -28,7 +28,7 @@ app.all('/', function(req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World Dung qua ngu 3.0');
+    res.send('Hello World Dung qua ngu 4.0');
 });
 
 app.use('/api/v1/user', userRoutes);

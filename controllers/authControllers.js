@@ -3,6 +3,7 @@ const { promisify } = require('util'); // promisify will return a function that 
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const bcrypt = require('bcryptjs');
 
 const signToken = (id) =>
     jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -49,11 +50,13 @@ exports.logIn = catchAsync(async (req, res, next) => {
     // res.json({ email: email, password: password });
 
     // 2) check if user exists and password are is correct
-    const user = await User.findOne({ email }).select('+password');
-    console.log(user.password);
-    if (!user || !user.correctPassword(password, user.password))
-        return next(new AppError('Incorrect email or password', 401));
-
+    const user = await User.findOne({
+        email
+    }).select('+password');
+    if (!user)
+        return next(new AppError('Incorrect email ', 401));
+    if (!await user.correctPassword(password, user.password))
+        return next(new AppError('Incorrect password', 401));
     // 3) if everything is ok, send token to client
     createAndSendToken(user, 200, res);
 });
@@ -102,12 +105,12 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 exports.restrictTo =
     (...role) =>
-    (req, res, next) => {
-        if (!role.includes(req.user.role)) {
-            return next(new AppError('You do not have permission to perform this action', 403));
-        }
-        next();
-    };
+        (req, res, next) => {
+            if (!role.includes(req.user.role)) {
+                return next(new AppError('You do not have permission to perform this action', 403));
+            }
+            next();
+        };
 
 exports.updatePasswords = catchAsync(async (req, res, next) => {
     //1) Get user form the collection

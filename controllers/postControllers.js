@@ -15,7 +15,7 @@ exports.getOnePost = catchAsync(async (req, res, next) => {
     const { postId } = req.params;
     const post = await Post.find({
         _id:postId
-    }).populate('author','name').select('content author createdAt');
+    }).populate('author','name').select('title content author createdAt');
     res.status(200).json({
         status: 'success',
         data: post

@@ -11,6 +11,17 @@ exports.getAllPosts = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getOnePost = catchAsync(async (req, res, next) => {
+    const { postId } = req.params;
+    const post = await Post.find({
+        _id:postId
+    }).populate('author','name').select('content author createdAt');
+    res.status(200).json({
+        status: 'success',
+        data: post
+    })
+});
+
 exports.createOnePost = catchAsync(async (req, res, next) => {
     //console.log(req.user);
     //res.json('sussess')

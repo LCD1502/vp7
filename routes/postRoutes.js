@@ -10,6 +10,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', postControllers.getAllPosts);
+router.get('/:postId', postControllers.getOnePost);
 router.post(
     '/',
     authControllers.protect,

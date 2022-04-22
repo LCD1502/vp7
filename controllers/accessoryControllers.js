@@ -11,6 +11,17 @@ exports.getAllAccessories = catchAsync(async (req, res, next) => {
     })
 });
 
+exports.getOneAccessory = catchAsync(async (req, res, next) => {
+    const { accessoryId } = req.params;
+    const accessory = await Accessory.find({
+        _id:accessoryId
+    }) //.populate('author','name').select('content createdAt');
+    res.status(200).json({
+        status: 'success',
+        data: accessory
+    })
+});
+
 exports.createOneAccessory = catchAsync(async (req, res, next) => {
     //const { userId } = req.user;
     const accessory = await Accessory.create({ ...req.body });

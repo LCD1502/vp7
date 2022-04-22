@@ -14,12 +14,10 @@ const globalErrorHandler = require('./controllers/erorcontroller');
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
-
-app.use(morgan('dev'));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.status(200).send('Hello World!');
 });
 
 app.use('/api/v1/user', userRoutes);

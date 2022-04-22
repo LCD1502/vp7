@@ -14,7 +14,8 @@ exports.getAllCars = catchAsync(async (req, res, next) => {
 exports.createOneCar = catchAsync(async (req, res, next) => {
     //const { userId } = req.user;
     const car = await Car.create({ ...req.body });
-    res.status(200).json({
+    if (!car) return next(new Error('Create unsuccessful'));
+    res.status(201).json({
         status: 'success',
         data: car,
     });

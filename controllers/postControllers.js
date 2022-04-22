@@ -3,7 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getAllPosts = catchAsync(async (req, res, next) => {
-    const post = await Post.find({}).populate('author','name').select('content author createdAt');
+    const post = await Post.find({}).populate('author','name').select('title content author createdAt');
     res.status(200).json({
         status: 'success',
         results: post.length,

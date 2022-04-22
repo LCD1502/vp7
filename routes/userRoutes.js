@@ -30,6 +30,7 @@ router.patch('/updateInfo', userControllers.updateInfo);
 router.patch('/updateCart', userControllers.updateCart);
 router.patch('/updateWishlist', userControllers.updateWishlist);
 router.get('/testFilter', userControllers.testFilter);
+router.post('/testSearch', userControllers.testSearch);
 
 // --- RESTRICT TO ADMIN ---
 router.use(authControllers.restrictTo('admin'));

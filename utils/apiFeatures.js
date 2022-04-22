@@ -3,7 +3,6 @@ class APIFeatures {
         this.query = query;
         this.queryString = queryString;
     }
-
     filter() {
         // 1a) filtering
         const queryObj = { ...this.queryString };

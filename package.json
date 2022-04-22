@@ -4,6 +4,7 @@
     "description": "learning nodejs, express, mongodb, react",
     "main": "app.js",
     "scripts": {
+        "debug":"ndb server.js",
         "start": "node server.js",
         "start:prod": "NODE_ENV=production nodemon --inspect server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -35,6 +36,7 @@
         "morgan": "^1.10.0",
         "multer": "^1.4.4",
         "multer-storage-cloudinary": "^4.0.0",
+        "ndb": "^1.1.5",
         "validator": "^13.7.0"
     },
     "devDependencies": {

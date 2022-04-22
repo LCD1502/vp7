@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
+const SearchFeature = require('../utils/searchFeature');
 const Accessory = require('../models/accessoryModel');
 
 exports.getUser = catchAsync(async (req, res, next) => {
@@ -87,3 +88,12 @@ exports.testFilter = catchAsync(async (req, res, next) => {
         docs,
     });
 });
+
+exports.testSearch = catchAsync(async (req, res, next) => {
+    // Lay keywords va type tu request
+    // const {keywords, type} = req.body;
+    const searchResult = SearchFeature.search(req.query)
+    res.json(searchResult)
+    // Them sort, filter vao SRP tinh sau
+    // viet ham query mongoose, return ket qua json(title, image, descript, gia(neu co) )
+})

@@ -29,7 +29,7 @@ app.all('/', function(req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World Dung qua ngu theem cdn');
+    res.send('Hello World Dung qua ngu theem cdn 2.0');
 });
 
 app.use('/api/v1/user', userRoutes);

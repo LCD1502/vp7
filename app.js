@@ -10,6 +10,7 @@ const showRoomRoutes = require('./routes/showRoomRoutes'); //hiep add showRoomRo
 const accessoryRoutes = require('./routes/accessoryRoutes'); //hiep add accessoryRoutes
 const accessoryBillRoutes = require('./routes/accessoryBillRoutes'); //hiep add accessoryRoutes
 const carOrderRoutes = require('./routes/carOrderRoutes');
+const uploadRouter = require('./routes/cloudiaryRoutes');
 const globalErrorHandler = require('./controllers/erorcontroller');
 
 if (process.env.NODE_ENV === 'development') {
@@ -28,7 +29,7 @@ app.all('/', function(req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World Dung qua ngu 4.0');
+    res.send('Hello World Dung qua ngu theem cdn');
 });
 
 app.use('/api/v1/user', userRoutes);
@@ -39,6 +40,7 @@ app.use('/api/v1/accessory', accessoryRoutes); // hiep add accessory
 app.use('/api/v1/accessory-bill', accessoryBillRoutes); // hiep add accessory bill
 app.use('/api/v1/carOrder', carOrderRoutes); // Luong
 //Lương chỉnh sửa sự nhất quán của biến, route trong các API
+app.use('/api/v1/uploads', uploadRouter); // hiep add cloudiary
 app.use('*', (req, res, next) => {
     res.status(404).send('Not Found');
 });

@@ -14,12 +14,13 @@ exports.getAllCars = catchAsync(async (req, res, next) => {
 exports.getOneCar = catchAsync(async (req, res, next) => {
     const { carId } = req.params;
     const car = await Car.find({
-        _id:carId
-    }) //.populate('author','name').select('content createdAt');
+        _id: carId,
+    }); //.populate('author','name').select('content createdAt');
+    if (!car) return next(new AppError('No Car found with this ID', 404));
     res.status(200).json({
         status: 'success',
-        data: car
-    })
+        data: car,
+    });
 });
 
 exports.createOneCar = catchAsync(async (req, res, next) => {
@@ -35,6 +36,7 @@ exports.updateOneCar = catchAsync(async (req, res, next) => {
     const { carId } = req.params;
     //const {userId} = req.user; nhận userID nếu cần
     const car = await Car.findByIdAndUpdate(carId, { ...req.body }, { new: true, runValidator: true });
+    if (!car) return next(new AppError('No Car found with this ID', 404));
     res.status(200).json({
         status: 'success',
         data: car,
@@ -45,6 +47,7 @@ exports.deleteOneCar = catchAsync(async (req, res, next) => {
     const { carId } = req.params;
     //const {userId} = req.user; nhận userID nếu cần
     const car = await Car.findByIdAndDelete(carId);
+    if (!car) return next(new AppError('No Car found with this ID', 404));
     res.status(200).json({
         status: 'success',
         message: 'car has been delete',

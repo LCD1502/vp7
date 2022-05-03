@@ -9,7 +9,8 @@ exports.getUser = catchAsync(async (req, res, next) => {
         _id: req.body.id,
     }).select('+active');
     res.json({
-        status: 'Get User successfully',
+        status: 'success',
+        message: 'get user successfully',
         user,
     });
 });
@@ -17,13 +18,16 @@ exports.getUser = catchAsync(async (req, res, next) => {
 exports.getAllUser = catchAsync(async (req, res, next) => {
     const users = await User.find().select('+active');
     res.json({
+        status: 'success',
+        message: 'get all users successfully',
         users,
     });
 });
 
 exports.getMe = catchAsync(async (req, res, next) => {
     res.json({
-        status: 'Get Me successfully',
+        status: 'success',
+        message: 'update me successfully',
         user: req.user,
     });
 });
@@ -42,6 +46,7 @@ exports.updateInfo = catchAsync(async (req, res, next) => {
     if (!doc) return next(new AppError('No User found with this ID', 404));
     res.status(200).json({
         status: 'success',
+        message: 'update info successfully',
         infoUpdatedUser: doc,
     });
 });
@@ -57,7 +62,8 @@ exports.updateCart = catchAsync(async (req, res, next) => {
     );
     if (!updatedUser) return next(new AppError('No User found with this ID', 404));
     res.json({
-        status: 'update cart successfully',
+        status: 'success',
+        message: 'update cart successfully',
         updatedUser,
     });
 });
@@ -72,7 +78,8 @@ exports.updateWishlist = catchAsync(async (req, res, next) => {
     );
     if (!updatedUser) return next(new AppError('No User found with this ID', 404));
     res.json({
-        status: 'update wishList successfully',
+        status: 'success',
+        message: 'update wishList successfully',
         updatedUser,
     });
 });

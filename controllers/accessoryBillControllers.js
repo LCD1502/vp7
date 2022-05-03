@@ -19,7 +19,7 @@ exports.getUserAccessoryBill = catchAsync(async (req, res, next) => {
 exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
     // bởi vì hàm protect đã lấy user từ database rồi, nên chính xác là user hiện tại, không cần get lại
     // kiem tra cart
-    if(req.user.cart[0]==undefined){
+    if (req.user.cart[0] === undefined) {
         return next(new AppError('Can not create accessory bill because Cart is empty', 400));
     }
     const accessoryBill = await AccessoryBill.create({
@@ -59,6 +59,7 @@ exports.updateOneAccessoryBill = catchAsync(async (req, res, next) => {
     );
     if (!updatedAccessoryBill) return next(new AppError('No Bill found', 404, 'Not Found'));
     res.status(200).json({
+        status: 'success',
         updatedAccessoryBill,
     });
 });

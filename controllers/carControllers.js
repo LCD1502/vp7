@@ -59,7 +59,8 @@ exports.compareTwoCars = catchAsync(async (req, res, next) => {
     const car2 = await Car.findById(req.body.carId2);
     if (!car1 || !car2) return next(new AppError('No Car found with this ID', 404));
     res.json({
-        status: 'get data of two cars successfully',
+        status: 'success',
+        message: 'get data of two cars successfully',
         data: {
             car1,
             car2,

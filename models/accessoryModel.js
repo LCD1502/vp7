@@ -21,9 +21,9 @@ const accessorySchema = new mongoose.Schema({
         required: [true, 'Accessory must have type'],
     },
     image: {
-        type: String,
-        default: 'default.png',
-        required: [true, 'Accessory must have image'],
+        avatar:{type:String  ,required: [true, 'Accessory must have avatar']},
+        banner:{type:String ,required: [true, 'Accessory must have banner']},
+        gallery:[]
     },
     amount: {
         //số lượng

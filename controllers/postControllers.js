@@ -3,7 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getAllPosts = catchAsync(async (req, res, next) => {
-    const post = await Post.find({}).populate('author', 'name').select('title content author createdAt');
+    const post = await Post.find({}).populate('author', 'name').select('title content author createdAt image');
     res.status(200).json({
         status: 'success',
         results: post.length,
@@ -17,7 +17,7 @@ exports.getOnePost = catchAsync(async (req, res, next) => {
         _id: postId,
     })
         .populate('author', 'name')
-        .select('title content author createdAt');
+        .select('title content author createdAt image');
     if (!post) return next(new AppError('No Post found with this ID', 404));
     res.status(200).json({
         status: 'success',

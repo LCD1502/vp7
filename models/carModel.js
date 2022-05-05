@@ -19,9 +19,12 @@ const carSchema = new mongoose.Schema({
         required: [true, 'Car must have deposit'],
     },
     image: {
-        type: String,
-        default: 'default.png',
-        required: [true, 'Car must have image'],
+        avatar:{type:String},
+        banner:{type:String},
+        gallery:[]
+        // type: [],
+        // default: 'default.png',
+        // required: [true, 'Car must have image'],
     },
     amount: {
         //số lượng
@@ -59,6 +62,7 @@ const carSchema = new mongoose.Schema({
     color: {
         type: [],
         default: ['black', 'white'],
+        required: [true, 'Car must have color'],
     },
     special: {
         // đặc điểm chức năng đặc biệt

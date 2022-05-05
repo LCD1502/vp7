@@ -3,7 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getAllCars = catchAsync(async (req, res, next) => {
-    const car = await Car.find({}); //.populate('author','name').select('content createdAt');
+    const car = await Car.find({})//.select('-image.gallery'); //.populate('author','name').select('content createdAt');
     res.status(200).json({
         status: 'success',
         results: car.length,

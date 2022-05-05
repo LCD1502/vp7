@@ -3,6 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 const Accessory = require('../models/accessoryModel');
+const util = require('util')
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const user = await User.find({
@@ -66,6 +67,57 @@ exports.updateCart = catchAsync(async (req, res, next) => {
         message: 'update cart successfully',
         updatedUser,
     });
+});
+
+exports.addItemToCart = catchAsync(async (req, res, next) => {
+
+    const user = await User.findById({ _id: req.user.id }).select('cart')
+    let newCart = [...user.cart];
+    let check = false;
+    let increase;
+    async function checkAndUpdate() {
+        for (const item of user.cart) {
+            if (item.itemId.toString() === req.body.itemId) {
+                newCart.forEach(subitem => {
+                    if (subitem.itemId.toString() == req.body.itemId) {
+                        subitem.quantity += req.body.quantity;
+                        return;
+                    }
+                })
+                increase = await User.findByIdAndUpdate({ _id: req.user.id }, {
+                    cart: newCart
+                }, { new: true, runValidator: true })
+                if (!increase) return next(new AppError('No User found with this ID', 404));
+                check = true;
+                console.log('check 1', check)
+                console.log('item.itemId.toString()', item.itemId.toString())
+            }
+        }
+
+        if (check) {
+            return res.json({
+                status: 'success',
+                message: 'increase cart successfully',
+                increase,
+            });
+        } else {
+            const add = await User.findByIdAndUpdate({ _id: req.user.id }, {
+                $push: {
+                    "cart": [{
+                        itemId: req.body.itemId,
+                        quantity: req.body.quantity
+                    }]
+                }
+            }, { new: true, runValidator: true })
+            if (!add) return next(new AppError('No User found with this ID', 404));
+            res.json({
+                status: 'success',
+                message: 'add cart successfully',
+                add,
+            });
+        }
+    }
+    checkAndUpdate()
 });
 
 exports.updateWishlist = catchAsync(async (req, res, next) => {

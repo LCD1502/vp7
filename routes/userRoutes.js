@@ -27,6 +27,7 @@ router.use(authControllers.protect);
 router.post('/updatePassword', authControllers.updatePasswords);
 router.get('/getMe', userControllers.getMe);
 router.patch('/updateInfo', userControllers.updateInfo);
+router.get('/getCart', userControllers.getCart);
 router.patch('/updateCart', userControllers.updateCart);
 router.patch('/addItemToCart', userControllers.addItemToCart);
 router.patch('/updateWishlist', userControllers.updateWishlist);

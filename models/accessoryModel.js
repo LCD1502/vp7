@@ -42,7 +42,8 @@ const accessorySchema = new mongoose.Schema({
     },
     specification: {}, //thông số kỹ thuật chưa tối ưu
     color: {
-        type: [],
+        type: [String],
+        enum:['red','yellow','white','blue','green','orange','pink','grey','black','brown','purple']
     },
 });
 

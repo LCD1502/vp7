@@ -73,6 +73,10 @@ const userSchema = new mongoose.Schema({
                 ref: 'Accessory',
             },
             quantity: Number,
+            color:{
+                type:String,
+                enum:['red','yellow','white','blue','green','orange','pink','grey','black','brown','purple']
+            }
         }
     ],
     wishList: {
@@ -106,6 +110,18 @@ userSchema.pre('save', async function (next) {
     this.passwordConfirmation = undefined;
     next();
 });
+
+userSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'cart.itemId',
+        select: '_id price name'
+    }).populate({
+        path: 'wishList.cars',
+    }).populate({
+        path: 'wishList.accessories',
+    });
+    next();
+})
 
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword);

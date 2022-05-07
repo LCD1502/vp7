@@ -52,6 +52,16 @@ exports.updateInfo = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getCart = catchAsync(async (req, res, next) => {
+    // console.log(req.body.cart);
+    const cart = req.user.cart;
+    res.json({
+        status: 'success',
+        message: 'get cart successfully',
+        cart,
+    });
+});
+
 exports.updateCart = catchAsync(async (req, res, next) => {
     // console.log(req.body.cart);
     const updatedUser = await User.findByIdAndUpdate(
@@ -73,24 +83,23 @@ exports.addItemToCart = catchAsync(async (req, res, next) => {
 
     const user = await User.findById({ _id: req.user.id }).select('cart')
     let newCart = [...user.cart];
+    console.log('newCart',newCart)
     let check = false;
     let increase;
     async function checkAndUpdate() {
         for (const item of user.cart) {
-            if (item.itemId.toString() === req.body.itemId) {
-                newCart.forEach(subitem => {
-                    if (subitem.itemId.toString() == req.body.itemId) {
-                        subitem.quantity += req.body.quantity;
-                        return;
-                    }
-                })
-                increase = await User.findByIdAndUpdate({ _id: req.user.id }, {
-                    cart: newCart
-                }, { new: true, runValidator: true })
-                if (!increase) return next(new AppError('No User found with this ID', 404));
-                check = true;
-                console.log('check 1', check)
-                console.log('item.itemId.toString()', item.itemId.toString())
+            if (item.itemId._id.toString() === req.body.itemId && item.color===req.body.color) {
+                    newCart.forEach(subitem => {
+                        if (subitem.itemId._id.toString() == req.body.itemId) {
+                            subitem.quantity += req.body.quantity;
+                            return;
+                        }
+                    })
+                    increase = await User.findByIdAndUpdate({ _id: req.user.id }, {
+                        cart: newCart
+                    }, { new: true, runValidator: true })
+                    if (!increase) return next(new AppError('No User found with this ID', 404));
+                    check = true;
             }
         }
 
@@ -105,7 +114,8 @@ exports.addItemToCart = catchAsync(async (req, res, next) => {
                 $push: {
                     "cart": [{
                         itemId: req.body.itemId,
-                        quantity: req.body.quantity
+                        quantity: req.body.quantity,
+                        color: req.body.color
                     }]
                 }
             }, { new: true, runValidator: true })

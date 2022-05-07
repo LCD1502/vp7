@@ -60,8 +60,9 @@ const carSchema = new mongoose.Schema({
         weight: { type: Number }, // tải trọng
     },
     color: {
-        type: [],
+        type: [String],
         default: ['black', 'white'],
+        enum:['red','yellow','white','blue','green','orange','pink','grey','black','brown','purple'],
         required: [true, 'Car must have color'],
     },
     special: {

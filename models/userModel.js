@@ -114,7 +114,7 @@ userSchema.pre('save', async function (next) {
 userSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'cart.itemId',
-        select: '_id price name'
+        select: '_id price name image.avatar description'
     }).populate({
         path: 'wishList.cars',
     }).populate({

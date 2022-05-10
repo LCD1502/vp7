@@ -26,6 +26,7 @@ exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
         userId: req.user.id,
         accessoryInfo: req.user.cart,
         totalPrice: req.body.totalPrice,
+        place: req.body.place,
         deliveryMethod: req.body.deliveryMethod,
     }); // them cart vao bill
     if (!accessoryBill) return next(new AppError('Can not create accessoryBill', 400, 'Bad Request'));

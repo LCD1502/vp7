@@ -8,11 +8,16 @@ const accessoryBillSchema = new mongoose.Schema(
                 _id: false,
                 itemId: { type: mongoose.Schema.Types.ObjectId, ref: 'Accessory' },
                 quantity: { type: Number, required: [true, 'Accessory must have amount'] },
+                color: { type: String, required: [true, 'Accessory must have color'] },
             },
         ],
         totalPrice: {
             type: Number,
             required: [true, 'Accessory bill must have total price'],
+        },
+        place: {
+            type: String,
+            required: [true, 'Accessory bill must have place'],
         },
         deliveryMethod: {
             type: String,
@@ -21,7 +26,7 @@ const accessoryBillSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['Pending', 'Success', 'Cancelled'],
+            enum: ['Pending','Accepted', 'Success', 'Cancelled'],
             default: 'Pending',
             required: [true, 'Accessory bill must have status'],
         },
@@ -35,6 +40,7 @@ const accessoryBillSchema = new mongoose.Schema(
 accessoryBillSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'accessoryInfo.itemId',
+        select:'-image.banner -image.gallery -color'
         // populate: {
         //     path: 'itemId',
         //     model: 'Accessory',

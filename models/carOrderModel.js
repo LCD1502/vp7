@@ -22,7 +22,7 @@ const carOrderScheme = mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Pending', 'Success', 'Cancelled'],
+        enum: ['Pending', 'Accepted','Success', 'Cancelled'],
         default: 'Pending',
         required: [true, 'Car Order must have the status'],
     },

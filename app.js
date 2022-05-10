@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-var cors = require("cors");
+var cors = require('cors');
 
 const app = express();
 const userRoutes = require('./routes/userRoutes');
@@ -21,15 +21,14 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
-
-app.all('/', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next()
+app.all('/', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    next();
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World Dung qua ngu theem cdn 2.0');
+    res.send('cap nhat server');
 });
 
 app.use('/api/v1/user', userRoutes);

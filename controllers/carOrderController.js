@@ -1,4 +1,5 @@
 const CarOrder = require('../models/carOrderModel');
+const Car = require('../models/carModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -25,6 +26,12 @@ exports.createCarOrder = catchAsync(async (req, res, next) => {
         deposit: req.body.deposit,
     });
     if (!carOrder) return next(new AppError('Create car order failed', 421));
+    //giảm số lượng xe trong kho
+    const car = await Car.findByIdAndUpdate(
+        req.body.carInfo,
+        {$inc:{ amount: - 1 }},
+        { new: true, runValidator: true });
+    if (!car) return next(new AppError('decrease car amount failed', 421));
     res.status(200).json({
         status: 'success',
         message: 'Create car order successfully',

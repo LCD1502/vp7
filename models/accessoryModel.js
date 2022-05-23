@@ -21,9 +21,9 @@ const accessorySchema = new mongoose.Schema({
         required: [true, 'Accessory must have type'],
     },
     image: {
-        avatar:{type:String  ,required: [true, 'Accessory must have avatar']},
-        banner:{type:String ,required: [true, 'Accessory must have banner']},
-        gallery:[]
+        avatar: { type: String, required: [true, 'Accessory must have avatar'] },
+        banner: { type: String, required: [true, 'Accessory must have banner'] },
+        gallery: [],
     },
     amount: {
         //số lượng
@@ -43,15 +43,11 @@ const accessorySchema = new mongoose.Schema({
     specification: {}, //thông số kỹ thuật chưa tối ưu
     color: {
         type: [String],
-        enum:['red','yellow','white','blue','green','orange','pink','grey','black','brown','purple']
+        enum: ['red', 'yellow', 'white', 'blue', 'green', 'orange', 'pink', 'grey', 'black', 'brown', 'purple'],
     },
 });
 
-// accessorySchema.virtual('accBills', {
-//     ref: 'AccessoryBill',
-//     localField: 'accessoryInfo.itemId',
-//     foreignField: '_id',
-// });
+accessorySchema.index({ '$**': 'text' });
 
 const Accessory = mongoose.model('Accessory', accessorySchema);
 module.exports = Accessory;

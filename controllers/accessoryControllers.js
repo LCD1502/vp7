@@ -69,3 +69,17 @@ exports.accessoryFilter = catchAsync(async (req, res, next) => {
         docs,
     });
 });
+
+exports.searchAccessory = catchAsync(async (req, res, next) => {
+    const searchString = req.query.keyword;
+    if (!searchString) return next(new AppError('No Search String Found', 400));
+    const items = await Accessory.find({
+        $text: { $search: searchString },
+    });
+    res.json({
+        status: 'success',
+        message: 'Search Accessory successfully',
+        results: items.length,
+        data: items,
+    });
+});

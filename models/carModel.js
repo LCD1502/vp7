@@ -19,9 +19,9 @@ const carSchema = new mongoose.Schema({
         required: [true, 'Car must have deposit'],
     },
     image: {
-        avatar:{type:String},
-        banner:{type:String},
-        gallery:[]
+        avatar: { type: String },
+        banner: { type: String },
+        gallery: [],
         // type: [],
         // default: 'default.png',
         // required: [true, 'Car must have image'],
@@ -62,7 +62,7 @@ const carSchema = new mongoose.Schema({
     color: {
         type: [String],
         default: ['black', 'white'],
-        enum:['red','yellow','white','blue','green','orange','pink','grey','black','brown','purple'],
+        enum: ['red', 'yellow', 'white', 'blue', 'green', 'orange', 'pink', 'grey', 'black', 'brown', 'purple'],
         required: [true, 'Car must have color'],
     },
     special: {
@@ -70,6 +70,8 @@ const carSchema = new mongoose.Schema({
         type: String,
     },
 });
+
+carSchema.index({ '$**': 'text' });
 
 const Car = mongoose.model('Car', carSchema);
 module.exports = Car;

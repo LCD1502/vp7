@@ -4,7 +4,7 @@ const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
 exports.getAllCars = catchAsync(async (req, res, next) => {
-    const car = await Car.find({})//.select('-image.gallery'); //.populate('author','name').select('content createdAt');
+    const car = await Car.find({}); //.select('-image.gallery'); //.populate('author','name').select('content createdAt');
     res.status(200).json({
         status: 'success',
         results: car.length,
@@ -77,5 +77,19 @@ exports.carFilter = catchAsync(async (req, res, next) => {
         status: 'success',
         results: docs.length,
         docs,
+    });
+});
+
+exports.searchCar = catchAsync(async (req, res, next) => {
+    const searchString = req.query.keyword;
+    if (!searchString) return next(new AppError('No Search String Found', 400));
+    const cars = await Car.find({
+        $text: { $search: searchString },
+    });
+    res.json({
+        status: 'success',
+        message: 'Search Car successfully',
+        results: cars.length,
+        data: cars,
     });
 });

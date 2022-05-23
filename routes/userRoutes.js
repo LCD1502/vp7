@@ -30,6 +30,7 @@ router.patch('/updateInfo', userControllers.updateInfo);
 router.get('/getCart', userControllers.getCart);
 router.patch('/updateCart', userControllers.updateCart);
 router.patch('/addItemToCart', userControllers.addItemToCart);
+router.patch('/addItemToWishlist', userControllers.addItemToWishlist);
 router.patch('/updateWishlist', userControllers.updateWishlist);
 router.get('/testFilter', userControllers.testFilter);
 

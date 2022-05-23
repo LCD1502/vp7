@@ -1,6 +1,7 @@
 const Accessory = require('../models/accessoryModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const APIFeatures = require('../utils/apiFeatures');
 
 exports.getAllAccessories = catchAsync(async (req, res, next) => {
     const accessory = await Accessory.find({}); //.populate('author','name').select('content createdAt');
@@ -55,5 +56,16 @@ exports.deleteOneAccessory = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         message: 'accessory has been delete',
+    });
+});
+
+exports.accessoryFilter = catchAsync(async (req, res, next) => {
+    // console.log(req.query);
+    const features = new APIFeatures(Accessory.find(), req.query).filter().sort().limitFields().paginate();
+    const docs = await features.query;
+    res.json({
+        status: 'success',
+        results: docs.length,
+        docs,
     });
 });

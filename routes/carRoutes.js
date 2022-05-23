@@ -10,6 +10,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', carControllers.getAllCars);
+router.get('/filter', carControllers.carFilter);
 router.get('/:carId', carControllers.getOneCar);
 router.get('/compareTwoCars', carControllers.compareTwoCars);
 router.post('/', authControllers.protect, authControllers.restrictTo('admin', 'manager'), carControllers.createOneCar);

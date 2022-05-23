@@ -3,7 +3,8 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 const Accessory = require('../models/accessoryModel');
-const util = require('util')
+const Car = require('../models/carModel');
+const util = require('util');
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const user = await User.find({
@@ -165,7 +166,9 @@ exports.addItemToWishlist = catchAsync(async (req, res, next) => {
                 if (!acc) return next(new AppError('No User found with this ID', 400));
                 for (const item of acc.wishList.accessories) {
                     if (item._id.toString() === req.body.itemId) {
-                        return next(new AppError('cannot add accessory to wish list because it has been exist in wishlist', 404));
+                        return next(
+                            new AppError('cannot add accessory to wish list because it has been exist in wishlist', 400)
+                        );
                     }
                 }
                 const add = await User.findByIdAndUpdate({ _id: req.user.id }, {
@@ -200,16 +203,5 @@ exports.updateWishlist = catchAsync(async (req, res, next) => {
         status: 'success',
         message: 'update wishList successfully',
         updatedUser,
-    });
-});
-
-exports.testFilter = catchAsync(async (req, res, next) => {
-    // console.log(req.query);
-    const features = new APIFeatures(Accessory.find(), req.query).filter().sort().limitFields().paginate();
-    const docs = await features.query;
-    res.json({
-        status: 'success',
-        results: docs.length,
-        docs,
     });
 });

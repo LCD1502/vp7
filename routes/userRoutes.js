@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
 router.post('/signup', authControllers.signUp);
 router.post('/logIn', authControllers.logIn);
 router.get('/logOut', authControllers.logOut);
+//router.get('/testFilter', userControllers.testFilter);
 
 // Because middle run in sequence, we use PROTECT middleware to protect all rote after this line.
 
@@ -32,7 +33,6 @@ router.patch('/updateCart', userControllers.updateCart);
 router.patch('/addItemToCart', userControllers.addItemToCart);
 router.patch('/addItemToWishlist', userControllers.addItemToWishlist);
 router.patch('/updateWishlist', userControllers.updateWishlist);
-router.get('/testFilter', userControllers.testFilter);
 
 // --- RESTRICT TO ADMIN ---
 router.use(authControllers.restrictTo('admin'));

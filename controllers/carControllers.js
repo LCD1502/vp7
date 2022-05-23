@@ -1,6 +1,7 @@
 const Car = require('../models/carModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const APIFeatures = require('../utils/apiFeatures');
 
 exports.getAllCars = catchAsync(async (req, res, next) => {
     const car = await Car.find({})//.select('-image.gallery'); //.populate('author','name').select('content createdAt');
@@ -65,5 +66,16 @@ exports.compareTwoCars = catchAsync(async (req, res, next) => {
             car1,
             car2,
         },
+    });
+});
+
+exports.carFilter = catchAsync(async (req, res, next) => {
+    // console.log(req.query);
+    const features = new APIFeatures(Car.find(), req.query).filter().sort().limitFields().paginate();
+    const docs = await features.query;
+    res.json({
+        status: 'success',
+        results: docs.length,
+        docs,
     });
 });

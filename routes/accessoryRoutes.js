@@ -10,6 +10,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', accessoryControllers.getAllAccessories);
+router.get('/filter', accessoryControllers.accessoryFilter);
 router.get('/:accessoryId', accessoryControllers.getOneAccessory);
 router.post('/', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryControllers.createOneAccessory);
 router.put('/:accessoryId', authControllers.protect, authControllers.restrictTo('admin','manager'), accessoryControllers.updateOneAccessory);

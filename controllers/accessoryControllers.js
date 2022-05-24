@@ -60,26 +60,20 @@ exports.deleteOneAccessory = catchAsync(async (req, res, next) => {
 });
 
 exports.accessoryFilter = catchAsync(async (req, res, next) => {
-    // console.log(req.query);
-    const features = new APIFeatures(Accessory.find(), req.query).filter().sort().limitFields().paginate();
+    const searchString = req.query.keyword;
+    delete req.query.keyword;
+
+    let searchQuery = {};
+    if (searchString) {
+        searchQuery = {
+            $text: { $search: searchString },
+        };
+    }
+    const features = new APIFeatures(Accessory.find(searchQuery), req.query).filter().sort().limitFields().paginate();
     const docs = await features.query;
     res.json({
         status: 'success',
         results: docs.length,
         docs,
-    });
-});
-
-exports.searchAccessory = catchAsync(async (req, res, next) => {
-    const searchString = req.query.keyword;
-    if (!searchString) return next(new AppError('No Search String Found', 400));
-    const items = await Accessory.find({
-        $text: { $search: searchString },
-    });
-    res.json({
-        status: 'success',
-        message: 'Search Accessory successfully',
-        results: items.length,
-        data: items,
     });
 });

@@ -70,26 +70,20 @@ exports.compareTwoCars = catchAsync(async (req, res, next) => {
 });
 
 exports.carFilter = catchAsync(async (req, res, next) => {
-    // console.log(req.query);
-    const features = new APIFeatures(Car.find(), req.query).filter().sort().limitFields().paginate();
+    const searchString = req.query.keyword;
+    delete req.query.keyword;
+
+    let searchQuery = {};
+    if (searchString) {
+        searchQuery = {
+            $text: { $search: searchString },
+        };
+    }
+    const features = new APIFeatures(Car.find(searchQuery), req.query).filter().sort().limitFields().paginate();
     const docs = await features.query;
     res.json({
         status: 'success',
         results: docs.length,
         docs,
-    });
-});
-
-exports.searchCar = catchAsync(async (req, res, next) => {
-    const searchString = req.query.keyword;
-    if (!searchString) return next(new AppError('No Search String Found', 400));
-    const cars = await Car.find({
-        $text: { $search: searchString },
-    });
-    res.json({
-        status: 'success',
-        message: 'Search Car successfully',
-        results: cars.length,
-        data: cars,
     });
 });

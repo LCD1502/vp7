@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const carOrderControllers = require('../controllers/carOrderController');
 const authControllers = require('../controllers/authControllers');
+const { count } = require('../models/userModel');
 
 router.use((req, res, next) => {
     console.log('time: ', Date.now());
@@ -43,6 +44,13 @@ router.delete(
     authControllers.protect,
     authControllers.restrictTo('admin', 'manager'),
     carOrderControllers.deleteCarOrder
+);
+
+router.get(
+    '/countCarOrder',
+    authControllers.protect,
+    authControllers.restrictTo('admin', 'manager'),
+    carOrderControllers.getCountCarOrder
 );
 
 module.exports = router;

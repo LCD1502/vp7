@@ -67,3 +67,23 @@ exports.compareTwoCars = catchAsync(async (req, res, next) => {
         },
     });
 });
+
+
+exports.searchCar = catchAsync(async (req, res, next) => {
+    const keyword = req.query.keyword;
+    // default filter
+    filters = null;
+
+    let query;
+    if (keyword) {
+        query = { $text: { $search: `${keyword}` } };
+    }
+    console.log(query)
+
+    let listCar;
+    listCar = await Car.find(query)
+    res.json({
+        listCar,
+    })
+
+})

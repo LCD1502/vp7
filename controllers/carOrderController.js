@@ -70,3 +70,16 @@ exports.deleteCarOrder = catchAsync(async (req, res, next) => {
         message: 'Car order has been delete',
     });
 });
+
+exports.getCountCarOrder = catchAsync(async (req, res, next) => {
+    //Lay so luong carOrderId
+    // Ket noi voi model carOder
+    // Ham lay so luong - mongoo
+    const carOrder = await CarOrder.countDocuments();
+    // tra ve so luong lay duoc
+    res.json({
+        status: 'success',
+        data: carOrder,
+    });
+
+})

@@ -3,7 +3,8 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 const Accessory = require('../models/accessoryModel');
-const util = require('util')
+const Car = require('../models/carModel');
+const util = require('util');
 
 exports.getUser = catchAsync(async (req, res, next) => {
     const user = await User.find({
@@ -83,23 +84,23 @@ exports.addItemToCart = catchAsync(async (req, res, next) => {
 
     const user = await User.findById({ _id: req.user.id }).select('cart')
     let newCart = [...user.cart];
-    console.log('newCart',newCart)
+    console.log('newCart', newCart)
     let check = false;
     let increase;
     async function checkAndUpdate() {
         for (const item of user.cart) {
-            if (item.itemId._id.toString() === req.body.itemId && item.color===req.body.color) {
-                    newCart.forEach(subitem => {
-                        if (subitem.itemId._id.toString() == req.body.itemId) {
-                            subitem.quantity += req.body.quantity;
-                            return;
-                        }
-                    })
-                    increase = await User.findByIdAndUpdate({ _id: req.user.id }, {
-                        cart: newCart
-                    }, { new: true, runValidator: true })
-                    if (!increase) return next(new AppError('No User found with this ID', 404));
-                    check = true;
+            if (item.itemId._id.toString() === req.body.itemId && item.color === req.body.color) {
+                newCart.forEach(subitem => {
+                    if (subitem.itemId._id.toString() == req.body.itemId) {
+                        subitem.quantity += req.body.quantity;
+                        return;
+                    }
+                })
+                increase = await User.findByIdAndUpdate({ _id: req.user.id }, {
+                    cart: newCart
+                }, { new: true, runValidator: true })
+                if (!increase) return next(new AppError('No User found with this ID', 404));
+                check = true;
             }
         }
 
@@ -130,6 +131,65 @@ exports.addItemToCart = catchAsync(async (req, res, next) => {
     checkAndUpdate()
 });
 
+exports.addItemToWishlist = catchAsync(async (req, res, next) => {
+    switch (req.body.type) {
+        case 'car':
+            {
+                const cars = await User.findById({
+                    _id: req.user.id
+                }).select('-cart -wishList.accessories -name -email -photo -role -info -_id')
+                if (!cars) return next(new AppError('No User found with this ID', 404));
+                for (const item of cars.wishList.cars) {
+                    if (item._id.toString() === req.body.itemId) {
+                        return next(new AppError('cannot add car to wish list because it has been exist in wishlist', 400));
+                    }
+                }
+                const add = await User.findByIdAndUpdate({ _id: req.user.id }, {
+                    $push: {
+                        "wishList.cars": [
+                            req.body.itemId
+                        ]
+                    }
+                }, { new: true, runValidator: true })
+                if (!add) return next(new AppError('No User found and cannot add car with this ID', 404));
+                return res.json({
+                    status: 'success',
+                    message: 'add car item to wishlist successfully',
+                    cars: add.wishList.cars
+                })
+            }
+        case 'accessory':
+            {
+                const acc = await User.findById({
+                    _id: req.user.id
+                }).select('-cart -wishList.cars -name -email -photo -role -info -_id')
+                if (!acc) return next(new AppError('No User found with this ID', 400));
+                for (const item of acc.wishList.accessories) {
+                    if (item._id.toString() === req.body.itemId) {
+                        return next(
+                            new AppError('cannot add accessory to wish list because it has been exist in wishlist', 400)
+                        );
+                    }
+                }
+                const add = await User.findByIdAndUpdate({ _id: req.user.id }, {
+                    $push: {
+                        "wishList.accessories": [
+                            req.body.itemId
+                        ]
+                    }
+                }, { new: true, runValidator: true })
+                if (!add) return next(new AppError('No User found and cannot add accessory with this ID', 404));
+                return res.json({
+                    status: 'success',
+                    message: 'add accessory item to wishlist successfully',
+                    accessories: add.wishList.accessories
+                })
+            }
+        default:
+            return next(new AppError('wrong or empty "type"', 400));
+    }
+});
+
 exports.updateWishlist = catchAsync(async (req, res, next) => {
     const updatedUser = await User.findByIdAndUpdate(
         req.user.id,
@@ -143,16 +203,5 @@ exports.updateWishlist = catchAsync(async (req, res, next) => {
         status: 'success',
         message: 'update wishList successfully',
         updatedUser,
-    });
-});
-
-exports.testFilter = catchAsync(async (req, res, next) => {
-    // console.log(req.query);
-    const features = new APIFeatures(Accessory.find(), req.query).filter().sort().limitFields().paginate();
-    const docs = await features.query;
-    res.json({
-        status: 'success',
-        results: docs.length,
-        docs,
     });
 });

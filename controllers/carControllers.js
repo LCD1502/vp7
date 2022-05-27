@@ -1,9 +1,10 @@
 const Car = require('../models/carModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const APIFeatures = require('../utils/apiFeatures');
 
 exports.getAllCars = catchAsync(async (req, res, next) => {
-    const car = await Car.find({})//.select('-image.gallery'); //.populate('author','name').select('content createdAt');
+    const car = await Car.find({}); //.select('-image.gallery'); //.populate('author','name').select('content createdAt');
     res.status(200).json({
         status: 'success',
         results: car.length,
@@ -68,22 +69,21 @@ exports.compareTwoCars = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.carFilter = catchAsync(async (req, res, next) => {
+    const searchString = req.query.keyword;
+    delete req.query.keyword;
 
-exports.searchCar = catchAsync(async (req, res, next) => {
-    const keyword = req.query.keyword;
-    // default filter
-    filters = null;
-
-    let query;
-    if (keyword) {
-        query = { $text: { $search: `${keyword}` } };
+    let searchQuery = {};
+    if (searchString) {
+        searchQuery = {
+            $text: { $search: searchString },
+        };
     }
-    console.log(query)
-
-    let listCar;
-    listCar = await Car.find(query)
+    const features = new APIFeatures(Car.find(searchQuery), req.query).filter().sort().limitFields().paginate();
+    const docs = await features.query;
     res.json({
-        listCar,
-    })
-
-})
+        status: 'success',
+        results: docs.length,
+        docs,
+    });
+});

@@ -8,12 +8,9 @@ router.use((req, res, next) => {
     console.log('Time: ', Date.now());
     next();
 });
-router.get(
-    '/search',
-    authControllers.protect,
-    authControllers.restrictTo('admin', 'manager'),
-    carControllers.searchCar
-);
+
+router.get('/', carControllers.getAllCars);
+router.get('/carFilter', carControllers.carFilter);
 router.get('/:carId', carControllers.getOneCar);
 router.get('/compareTwoCars', carControllers.compareTwoCars);
 router.post('/', authControllers.protect, authControllers.restrictTo('admin', 'manager'), carControllers.createOneCar);

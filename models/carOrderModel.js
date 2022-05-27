@@ -22,7 +22,7 @@ const carOrderScheme = mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Pending', 'Accepted','Success', 'Cancelled'],
+        enum: ['Pending', 'Accepted', 'Success', 'Cancelled'],
         default: 'Pending',
         required: [true, 'Car Order must have the status'],
     },
@@ -31,7 +31,7 @@ const carOrderScheme = mongoose.Schema({
 carOrderScheme.pre(/^find/, function (next) {
     this.populate({
         path: 'userInfo',
-        select: 'name photo email',
+        select: 'name photo email info',
     })
         .populate({
             path: 'carInfo',

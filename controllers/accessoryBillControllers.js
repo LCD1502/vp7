@@ -1,3 +1,4 @@
+const Accessory = require('../models/accessoryModel');
 const AccessoryBill = require('../models/accessoryBillModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -30,6 +31,10 @@ exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
         deliveryMethod: req.body.deliveryMethod,
     }); // them cart vao bill
     if (!accessoryBill) return next(new AppError('Can not create accessoryBill', 400, 'Bad Request'));
+    //giảm số lượng accessory trong kho
+
+    //await Accessory.findByIdAndUpdate()
+    
     //xoa cart trong user:
     await User.findByIdAndUpdate(req.user.id, { cart: [] });
     res.status(201).json({
@@ -39,9 +44,8 @@ exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
 });
 
 //admin manager  chưa xong
-
 exports.getAllAccessoryBills = catchAsync(async (req, res, next) => {
-    const accessoryBills = await AccessoryBill.find({}); //.populate('author','name').select('content createdAt');
+    const accessoryBills = await AccessoryBill.find({}).populate({ path: 'userId', select: '-wishList -cart -photo' })
     if (!accessoryBills) return next(new AppError('Cannot load all Accessory Bills', 400, 'Bad Request'));
     res.status(200).json({
         status: 'success',

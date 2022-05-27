@@ -21,7 +21,7 @@ const carSchema = new mongoose.Schema({
     image: {
         avatar: { type: String },
         banner: { type: String },
-        gallery: []
+        gallery: [],
         // type: [],
         // default: 'default.png',
         // required: [true, 'Car must have image'],
@@ -70,6 +70,8 @@ const carSchema = new mongoose.Schema({
         type: String,
     },
 });
-carSchema.index({ name: 'text', code: 'text', model: 'text' });
+
+carSchema.index({ '$**': 'text' });
+
 const Car = mongoose.model('Car', carSchema);
 module.exports = Car;

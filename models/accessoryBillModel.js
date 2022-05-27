@@ -40,12 +40,16 @@ const accessoryBillSchema = new mongoose.Schema(
 accessoryBillSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'accessoryInfo.itemId',
-        select:'-image.banner -image.gallery -color'
+        select:'-image.banner -image.gallery -color',
         // populate: {
         //     path: 'itemId',
         //     model: 'Accessory',
         // },
-    });
+    })
+    // .populate({
+    //     path: 'userId',
+    //     select:'-wishList -cart -photo',
+    // });
     next();
 });
 

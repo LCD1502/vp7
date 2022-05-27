@@ -11,13 +11,10 @@ class APIFeatures {
         excludeFields.forEach((field) => {
             delete queryObj[field];
         });
-        console.log('req.query: ', this.queryString);
-        console.log('query Obj: ', queryObj);
-
         // 1b) advance filtering
         let queryStr = JSON.stringify(queryObj);
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-        console.log('filtering Obj', JSON.parse(queryStr));
+        // console.log('filtering Obj', JSON.parse(queryStr));
 
         //let query = Tour.find(JSON.parse(queryStr)); // find method return a query object
         this.query = this.query.find(JSON.parse(queryStr));
@@ -29,7 +26,7 @@ class APIFeatures {
         // 2) sorting
         if (this.queryString.sort) {
             const sortBy = this.queryString.sort.split(',').join(' '); // split to an array, join to create array with space
-            console.log('Sorting Obj', sortBy);
+            // console.log('Sorting Obj', sortBy);
             this.query = this.query.sort(sortBy); // IN API ...?sort=price / ...?sort=-price
             // sort(price ratingsAverage)
         } else {
@@ -42,7 +39,7 @@ class APIFeatures {
         // 3) fields limiting
         if (this.queryString.fields) {
             const fields = this.queryString.fields.split(',').join(' ');
-            console.log('Select Fields:', fields);
+            // console.log('Select Fields:', fields);
             this.query = this.query.select(fields); // .select('name price difficulty duration')
         } else {
             this.query = this.query.select('-__v'); // except '__v' field

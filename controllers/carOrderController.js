@@ -3,6 +3,7 @@ const Car = require('../models/carModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
+//route for user
 exports.getCarOrder = catchAsync(async (req, res, next) => {
     const { id } = req.user;
     const carOrder = await CarOrder.find({
@@ -24,13 +25,16 @@ exports.createCarOrder = catchAsync(async (req, res, next) => {
         time: req.body.time,
         place: req.body.place,
         deposit: req.body.deposit,
+        phone: req.body.phone,
+        note: req.body.note,
     });
     if (!carOrder) return next(new AppError('Create car order failed', 421));
     //giảm số lượng xe trong kho
     const car = await Car.findByIdAndUpdate(
         req.body.carInfo,
-        {$inc:{ amount: - 1 }},
-        { new: true, runValidator: true });
+        { $inc: { amount: -1 } },
+        { new: true, runValidator: true }
+    );
     if (!car) return next(new AppError('decrease car amount failed', 421));
     res.status(200).json({
         status: 'success',
@@ -50,6 +54,16 @@ exports.getAllCarOrder = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getCarOrderDetail = catchAsync(async (req, res, next) => {
+    const carOrder = await CarOrder.findById(req.params.carOrderId);
+    if (!carOrder) return next(new Error('Can not found order with this id', 404));
+    res.status(200).json({
+        status: 'success',
+        message: 'getCarOrder successfully',
+        carOrder,
+    });
+});
+
 exports.updateCarOrder = catchAsync(async (req, res, next) => {
     const carOrder = await CarOrder.findByIdAndUpdate(
         req.params.carOrderId,
@@ -66,6 +80,22 @@ exports.updateCarOrder = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.cancelCarOrder = catchAsync(async (req, res, next) => {
+    const carOrder = await CarOrder.findByIdAndUpdate(
+        req.params.carOrderId,
+        {
+            status: 'Cancelled',
+        },
+        { new: true, runValidator: true }
+    );
+    if (!carOrder) return next(new Error('Can not found order with this id', 404));
+    res.status(200).json({
+        status: 'success',
+        message: `Cancel Car order successfully`,
+        carOrder,
+    });
+});
+
 exports.deleteCarOrder = catchAsync(async (req, res, next) => {
     const { carOrderId } = req.params;
     //const {userId} = req.user; nhận userID nếu cần
@@ -74,6 +104,6 @@ exports.deleteCarOrder = catchAsync(async (req, res, next) => {
     if (!deleteCarOrder) return next(new Error('Can delete car order with this id', 404));
     res.status(200).json({
         status: 'success',
-        message: 'Car order has been delete',
+        message: 'Car order has been deleted',
     });
 });

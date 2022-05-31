@@ -26,12 +26,18 @@ const carOrderScheme = mongoose.Schema({
         default: 'Pending',
         required: [true, 'Car Order must have the status'],
     },
+    phone: {
+        type: String,
+    },
+    note: {
+        type: String,
+    },
 });
 
 carOrderScheme.pre(/^find/, function (next) {
     this.populate({
         path: 'userInfo',
-        select: 'name photo email info',
+        select: '-wishList -cart',
     })
         .populate({
             path: 'carInfo',

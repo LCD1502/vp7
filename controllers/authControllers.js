@@ -52,13 +52,9 @@ exports.logIn = catchAsync(async (req, res, next) => {
     // 2) check if user exists and password are is correct
     const user = await User.findOne({
         email,
-    }).select('+password +active');
-    console.log(user);
+    }).select('+password');
     if (!user) return next(new AppError('Incorrect email ', 401));
     if (!(await user.correctPassword(password, user.password))) return next(new AppError('Incorrect password', 401));
-    // check if user is still active
-    if (!user.active) return next(new AppError('This user is not active', 401));
-    delete user.active;
     // // 3) if everything is ok, send token to client
     createAndSendToken(user, 200, res);
 });
@@ -78,10 +74,6 @@ exports.logOut = (req, res) => {
 exports.protect = catchAsync(async (req, res, next) => {
     let token;
     // console.log(req.headers.authorization);
-    if (!req.headers.authorization) {
-        return next(new AppError('You are not logged in! Please log in to get access', 401));
-    }
-
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
     } else if (req.cookies.jwt) {

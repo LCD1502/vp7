@@ -40,4 +40,5 @@ router.use(authControllers.restrictTo('admin'));
 router.get('/getUser', userControllers.getUser);
 router.get('/getAllUser', userControllers.getAllUser);
 router.patch('/toggleUser/:id', authControllers.toggleUser);
+router.get('/admindata', userControllers.adminData);
 module.exports = router;

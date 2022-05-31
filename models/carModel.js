@@ -53,11 +53,11 @@ const carSchema = new mongoose.Schema({
     },
     specification: {
         //thông số kỹ thuật
-        displacement: { type: Number }, //dung tích xy lanh
-        power: { type: Number }, //công suất
-        maxSpeed: { type: Number }, // tốc độ tối đa
-        acceleration: { type: Number }, //tăng tốc 0-100
-        weight: { type: Number }, // tải trọng
+        displacement: { type: Number, required: [true, 'Car must have specification'], }, //dung tích xy lanh
+        power: { type: Number,required: [true, 'Car must have specification'], }, //công suất
+        maxSpeed: { type: Number,required: [true, 'Car must have specification'], }, // tốc độ tối đa
+        acceleration: { type: Number,required: [true, 'Car must have specification'], }, //tăng tốc 0-100
+        weight: { type: Number ,required: [true, 'Car must have specification'],}, // tải trọng
     },
     color: {
         type: [String],
@@ -68,6 +68,7 @@ const carSchema = new mongoose.Schema({
     special: {
         // đặc điểm chức năng đặc biệt
         type: String,
+        required: [true, 'Car must have special'],
     },
 });
 

@@ -68,7 +68,6 @@ const carSchema = new mongoose.Schema({
     special: {
         // đặc điểm chức năng đặc biệt
         type: String,
-        required: [true, 'Car must have special'],
     },
 });
 

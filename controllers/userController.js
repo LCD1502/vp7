@@ -3,7 +3,9 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 const Accessory = require('../models/accessoryModel');
+const AccessoryBill = require('../models/accessoryBillModel');
 const Car = require('../models/carModel');
+const CarOrder = require('../models/carOrderModel');
 const util = require('util');
 
 exports.getUser = catchAsync(async (req, res, next) => {
@@ -214,5 +216,23 @@ exports.updateWishlist = catchAsync(async (req, res, next) => {
         status: 'success',
         message: 'update wishList successfully',
         updatedUser,
+    });
+});
+
+exports.adminData = catchAsync(async (req, res, next) => {
+    const user = await User.find({
+        role:'user'
+    }).select(' -cart -wishList -email -photo -info -role')
+    if (!user) return next(new AppError('No User found', 404));
+    const order = await CarOrder.find().select('-userInfo -carInfo.image')
+    if (!order) return next(new AppError('Order error', 404));
+    const bill = await AccessoryBill.find().select('-itemId.image -itemId.specification -itemId.description')
+    if (!bill) return next(new AppError('Bill error', 404));
+    //tra ve so luong nguoi dung, tong don hang, tong doanh thu
+    res.json({
+        status: 'success',
+        user:user,
+        carOrder:order,
+        accessoryBill:bill
     });
 });

@@ -10,6 +10,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', showRoomControllers.getAllShowRooms);
+router.get('/:showRoomId', showRoomControllers.getOneShowRoom);
 router.post(
     '/',
     authControllers.protect,

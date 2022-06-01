@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        default: 'default.png',
+        default: 'https://res.cloudinary.com/sevenimg/image/upload/v1654103519/24-248253_user-profile-default-image-png-clipart-png-download_ukfjmc.png',
     },
     role: {
         type: String,

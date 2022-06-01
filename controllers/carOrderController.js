@@ -94,7 +94,7 @@ exports.cancelCarOrder = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         message: `Cancel Car order successfully`,
-        newCarOrder:carOrder,
+        newCarOrder: carOrder,
     });
 });
 

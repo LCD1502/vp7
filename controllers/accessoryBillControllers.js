@@ -1,3 +1,4 @@
+const Accessory = require('../models/accessoryModel');
 const AccessoryBill = require('../models/accessoryBillModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -19,16 +20,21 @@ exports.getUserAccessoryBill = catchAsync(async (req, res, next) => {
 exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
     // bởi vì hàm protect đã lấy user từ database rồi, nên chính xác là user hiện tại, không cần get lại
     // kiem tra cart
-    if(req.user.cart[0]==undefined){
+    if (req.user.cart[0] === undefined) {
         return next(new AppError('Can not create accessory bill because Cart is empty', 400));
     }
     const accessoryBill = await AccessoryBill.create({
         userId: req.user.id,
         accessoryInfo: req.user.cart,
         totalPrice: req.body.totalPrice,
+        place: req.body.place,
         deliveryMethod: req.body.deliveryMethod,
     }); // them cart vao bill
     if (!accessoryBill) return next(new AppError('Can not create accessoryBill', 400, 'Bad Request'));
+    //giảm số lượng accessory trong kho
+
+    //await Accessory.findByIdAndUpdate()
+
     //xoa cart trong user:
     await User.findByIdAndUpdate(req.user.id, { cart: [] });
     res.status(201).json({
@@ -38,9 +44,8 @@ exports.createUserAccessoryBill = catchAsync(async (req, res, next) => {
 });
 
 //admin manager  chưa xong
-
 exports.getAllAccessoryBills = catchAsync(async (req, res, next) => {
-    const accessoryBills = await AccessoryBill.find({}); //.populate('author','name').select('content createdAt');
+    const accessoryBills = await AccessoryBill.find({}).populate({ path: 'userId', select: '-wishList -cart -photo' });
     if (!accessoryBills) return next(new AppError('Cannot load all Accessory Bills', 400, 'Bad Request'));
     res.status(200).json({
         status: 'success',
@@ -59,6 +64,23 @@ exports.updateOneAccessoryBill = catchAsync(async (req, res, next) => {
     );
     if (!updatedAccessoryBill) return next(new AppError('No Bill found', 404, 'Not Found'));
     res.status(200).json({
+        status: 'success',
+        updatedAccessoryBill,
+    });
+});
+
+exports.cancelAccessoryBill = catchAsync(async (req, res, next) => {
+    const updatedAccessoryBill = await AccessoryBill.findByIdAndUpdate(
+        req.params.accessoryBillId,
+        {
+            status: 'Cancelled',
+        },
+        { new: true, runValidator: true }
+    );
+    if (!updatedAccessoryBill) return next(new AppError('No Bill found', 404, 'Not Found'));
+    res.status(200).json({
+        status: 'success',
+        message: `Cancel accessory bill successfully`,
         updatedAccessoryBill,
     });
 });

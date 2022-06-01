@@ -23,6 +23,15 @@ router.post(
     carOrderControllers.createCarOrder
 );
 
+router.get(
+    '/detail/:carOrderId',
+    authControllers.protect,
+    authControllers.restrictTo('user', 'admin', 'manager'),
+    carOrderControllers.getCarOrderDetail
+);
+
+router.patch('/cancel/:carOrderId', authControllers.protect, carOrderControllers.cancelCarOrder);
+
 // admin and manager
 router.get(
     '/all',

@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
 router.post('/signup', authControllers.signUp);
 router.post('/logIn', authControllers.logIn);
 router.get('/logOut', authControllers.logOut);
+//router.get('/testFilter', userControllers.testFilter);
 
 // Because middle run in sequence, we use PROTECT middleware to protect all rote after this line.
 
@@ -27,9 +28,11 @@ router.use(authControllers.protect);
 router.post('/updatePassword', authControllers.updatePasswords);
 router.get('/getMe', userControllers.getMe);
 router.patch('/updateInfo', userControllers.updateInfo);
+router.get('/getCart', userControllers.getCart);
 router.patch('/updateCart', userControllers.updateCart);
+router.patch('/addItemToCart', userControllers.addItemToCart);
+router.patch('/addItemToWishlist', userControllers.addItemToWishlist);
 router.patch('/updateWishlist', userControllers.updateWishlist);
-router.get('/testFilter', userControllers.testFilter);
 
 // --- RESTRICT TO ADMIN ---
 router.use(authControllers.restrictTo('admin'));
@@ -37,4 +40,5 @@ router.use(authControllers.restrictTo('admin'));
 router.get('/getUser', userControllers.getUser);
 router.get('/getAllUser', userControllers.getAllUser);
 router.patch('/toggleUser/:id', authControllers.toggleUser);
+router.get('/admindata', userControllers.adminData);
 module.exports = router;

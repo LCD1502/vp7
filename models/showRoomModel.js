@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const showRoomSchema = new mongoose.Schema(
     {
+        name: { type: String, unique: true, trim: true, required: [true, 'ShowRoom must have name'] },
         address: { type: String, unique: true, trim: true, required: [true, 'ShowRoom must have address'] },
         description: { type: String, trim: true, required: [true, 'ShowRoom must have description'] },
         coordinate: {

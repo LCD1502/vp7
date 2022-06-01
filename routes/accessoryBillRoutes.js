@@ -23,6 +23,8 @@ router.post(
     accessoryBillControllers.createUserAccessoryBill
 );
 
+router.patch('/cancel/:accessoryBillId', authControllers.protect, accessoryBillControllers.cancelAccessoryBill);
+
 //admin and mamager bill
 router.get(
     '/all',

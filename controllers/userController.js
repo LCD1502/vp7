@@ -221,7 +221,7 @@ exports.updateWishlist = catchAsync(async (req, res, next) => {
 
 exports.adminData = catchAsync(async (req, res, next) => {
     const user = await User.find({
-        role:'user'
+        role: 'user'
     }).select(' -cart -wishList -email -photo -info -role')
     if (!user) return next(new AppError('No User found', 404));
     const order = await CarOrder.find().select('-userInfo -carInfo.image')
@@ -231,8 +231,42 @@ exports.adminData = catchAsync(async (req, res, next) => {
     //tra ve so luong nguoi dung, tong don hang, tong doanh thu
     res.json({
         status: 'success',
-        user:user,
-        carOrder:order,
-        accessoryBill:bill
+        user: user,
+        carOrder: order,
+        accessoryBill: bill
+    });
+});
+
+exports.adminDataCountOrder = catchAsync(async (req, res, next) => {
+    const countOrder = await CarOrder
+        .aggregate([{
+            "$group":
+            {
+                "_id": { "$dateToString": { "format": "%Y-%m-%d", "date": "$created_at"} },
+
+                //time: '$time',
+                "total_order": { "$count": {} }
+            }
+        }])
+    if (!countOrder) return next(new AppError('Count Order error', 404));
+    res.json({
+        status: 'success',
+        countOrder:countOrder,
+    });
+});
+
+exports.adminDataCountBill = catchAsync(async (req, res, next) => {
+    const countBill = await AccessoryBill
+        .aggregate([{
+            $group:
+            {
+                "_id": { "$dateToString": { "format": "%Y-%m-%d", "date": "$created_at"} },
+                total_order: { $count: {} }
+            }
+        }])
+    if (!countBill) return next(new AppError('Count Bill error', 404));
+    res.json({
+        status: 'success',
+        countBill:countBill,
     });
 });

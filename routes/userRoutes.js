@@ -41,4 +41,6 @@ router.get('/getUser', userControllers.getUser);
 router.get('/getAllUser', userControllers.getAllUser);
 router.patch('/toggleUser/:id', authControllers.toggleUser);
 router.get('/admindata', userControllers.adminData);
+router.get('/admindata/countOrder', userControllers.adminDataCountOrder);
+router.get('/admindata/countBill', userControllers.adminDataCountBill);
 module.exports = router;

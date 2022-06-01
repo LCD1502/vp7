@@ -32,7 +32,7 @@ const carOrderScheme = mongoose.Schema({
     note: {
         type: String,
     },
-});
+}, {timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
 
 carOrderScheme.pre(/^find/, function (next) {
     this.populate({

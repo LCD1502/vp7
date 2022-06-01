@@ -5,6 +5,7 @@ const showRoomControllers = require('../controllers/showRoomControllers');
 const authControllers = require('../controllers/authControllers');
 
 router.get('/', showRoomControllers.getAllShowRooms);
+router.get('/:showRoomId', showRoomControllers.getOneShowRoom);
 router.post(
     '/',
     authControllers.protect,

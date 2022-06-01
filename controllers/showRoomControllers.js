@@ -4,10 +4,28 @@ const AppError = require('../utils/appError');
 
 exports.getAllShowRooms = catchAsync(async (req, res, next) => {
     const showRoom = await ShowRoom.find({}); //.populate('author','name').select('content author createdAt');
+    if (!showRoom) {
+        return next(new AppError('There no showroom', 404));
+    }
     res.status(200).json({
         status: 'success',
         results: showRoom.length,
         data: { showRoom },
+    });
+});
+
+exports.getOneShowRoom = catchAsync(async (req, res, next) => {
+    const { showRoomId } = req.params;
+    const showRoom = await ShowRoom.findOne({
+        _id:showRoomId
+    }); //.populate('author','name').select('content author createdAt');
+    if (!showRoom) {
+        return next(new AppError('Cant found this showroom id', 404));
+    }
+    res.status(200).json({
+        status: 'success',
+        messahe: 'get one showroom success',
+        data:  showRoom ,
     });
 });
 

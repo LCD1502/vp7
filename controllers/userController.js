@@ -247,7 +247,7 @@ exports.adminDataCountOrder = catchAsync(async (req, res, next) => {
                 //time: '$time',
                 "total_order": { "$count": {} }
             }
-        }])
+        }]).sort("_id")
     if (!countOrder) return next(new AppError('Count Order error', 404));
     res.json({
         status: 'success',
@@ -263,7 +263,7 @@ exports.adminDataCountBill = catchAsync(async (req, res, next) => {
                 "_id": { "$dateToString": { "format": "%Y-%m-%d", "date": "$created_at"} },
                 total_order: { $count: {} }
             }
-        }])
+        }]).sort("_id")
     if (!countBill) return next(new AppError('Count Bill error', 404));
     res.json({
         status: 'success',

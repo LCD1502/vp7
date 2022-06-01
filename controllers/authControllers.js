@@ -3,7 +3,7 @@ const { promisify } = require('util'); // promisify will return a function that 
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
 const signToken = (id) =>
     jwt.sign({ id }, process.env.JWT_SECRET, {

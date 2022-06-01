@@ -5,6 +5,7 @@ const carControllers = require('../controllers/carControllers');
 const authControllers = require('../controllers/authControllers');
 
 router.get('/', carControllers.getAllCars);
+router.get('/carFilter', carControllers.carFilter);
 router.get('/:carId', carControllers.getOneCar);
 router.get('/compareTwoCars', carControllers.compareTwoCars);
 router.post('/', authControllers.protect, authControllers.restrictTo('admin', 'manager'), carControllers.createOneCar);

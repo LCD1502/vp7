@@ -1,7 +1,9 @@
 const CarOrder = require('../models/carOrderModel');
+const Car = require('../models/carModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
+//route for user
 exports.getCarOrder = catchAsync(async (req, res, next) => {
     const { id } = req.user;
     const carOrder = await CarOrder.find({
@@ -9,7 +11,8 @@ exports.getCarOrder = catchAsync(async (req, res, next) => {
     });
     if (!carOrder) return next(new AppError('Cannot get Car order', 404, 'Not Found'));
     res.status(200).json({
-        status: 'Get car order successfully',
+        status: 'success',
+        message: 'Get car order successfully',
         results: carOrder.length,
         data: { carOrder },
     });
@@ -22,10 +25,20 @@ exports.createCarOrder = catchAsync(async (req, res, next) => {
         time: req.body.time,
         place: req.body.place,
         deposit: req.body.deposit,
+        phone: req.body.phone,
+        note: req.body.note,
     });
     if (!carOrder) return next(new AppError('Create car order failed', 421));
+    //giảm số lượng xe trong kho
+    const car = await Car.findByIdAndUpdate(
+        req.body.carInfo,
+        { $inc: { amount: -1 } },
+        { new: true, runValidator: true }
+    );
+    if (!car) return next(new AppError('decrease car amount failed', 421));
     res.status(200).json({
-        status: 'Create car order successfully',
+        status: 'success',
+        message: 'Create car order successfully',
         carOrder,
     });
 });
@@ -34,9 +47,20 @@ exports.getAllCarOrder = catchAsync(async (req, res, next) => {
     const carOrders = await CarOrder.find({});
     if (!carOrders) return next(new AppError('Cannot load all Car orders', 400, 'Bad Request'));
     res.status(200).json({
-        status: 'Get All car order successfully',
+        status: 'success',
+        message: 'Get All car order successfully',
         results: carOrders.length,
         data: { carOrders },
+    });
+});
+
+exports.getCarOrderDetail = catchAsync(async (req, res, next) => {
+    const carOrder = await CarOrder.findById(req.params.carOrderId);
+    if (!carOrder) return next(new Error('Can not found order with this id', 404));
+    res.status(200).json({
+        status: 'success',
+        message: 'getCarOrder successfully',
+        carOrder,
     });
 });
 
@@ -50,7 +74,24 @@ exports.updateCarOrder = catchAsync(async (req, res, next) => {
     );
     if (!carOrder) return next(new Error('Can not found order with this id', 404));
     res.status(200).json({
-        status: `Update order status ${carOrder.status} successfully`,
+        status: 'success',
+        message: `Update order status ${carOrder.status} successfully`,
+        carOrder,
+    });
+});
+
+exports.cancelCarOrder = catchAsync(async (req, res, next) => {
+    const carOrder = await CarOrder.findByIdAndUpdate(
+        req.params.carOrderId,
+        {
+            status: 'Cancelled',
+        },
+        { new: true, runValidator: true }
+    );
+    if (!carOrder) return next(new Error('Can not found order with this id', 404));
+    res.status(200).json({
+        status: 'success',
+        message: `Cancel Car order successfully`,
         carOrder,
     });
 });
@@ -63,6 +104,6 @@ exports.deleteCarOrder = catchAsync(async (req, res, next) => {
     if (!deleteCarOrder) return next(new Error('Can delete car order with this id', 404));
     res.status(200).json({
         status: 'success',
-        message: 'Car order has been delete'
+        message: 'Car order has been deleted',
     });
 });

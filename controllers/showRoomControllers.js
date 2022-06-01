@@ -39,6 +39,9 @@ exports.deleteOneShowRoom = catchAsync(async (req, res, next) => {
     const { showRoomId } = req.params;
     //const {userId} = req.user; nhận userID nếu cần
     const showRoom = await ShowRoom.findByIdAndDelete(showRoomId);
+    if (!showRoom) {
+        return next(new AppError('Cant found this showroom id', 404));
+    }
     res.status(200).json({
         status: 'success',
         message: 'Showroom has been delete',

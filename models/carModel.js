@@ -19,9 +19,12 @@ const carSchema = new mongoose.Schema({
         required: [true, 'Car must have deposit'],
     },
     image: {
-        type: String,
-        default: 'default.png',
-        required: [true, 'Car must have image'],
+        avatar: { type: String },
+        banner: { type: String },
+        gallery: [],
+        // type: [],
+        // default: 'default.png',
+        // required: [true, 'Car must have image'],
     },
     amount: {
         //số lượng
@@ -50,21 +53,25 @@ const carSchema = new mongoose.Schema({
     },
     specification: {
         //thông số kỹ thuật
-        displacement: { type: Number }, //dung tích xy lanh
-        power: { type: Number }, //công suất
-        maxSpeed: { type: Number }, // tốc độ tối đa
-        acceleration: { type: Number }, //tăng tốc 0-100
-        weight: { type: Number }, // tải trọng
+        displacement: { type: Number, required: [true, 'Car must have specification'], }, //dung tích xy lanh
+        power: { type: Number,required: [true, 'Car must have specification'], }, //công suất
+        maxSpeed: { type: Number,required: [true, 'Car must have specification'], }, // tốc độ tối đa
+        acceleration: { type: Number,required: [true, 'Car must have specification'], }, //tăng tốc 0-100
+        weight: { type: Number ,required: [true, 'Car must have specification'],}, // tải trọng
     },
     color: {
-        type: [],
+        type: [String],
         default: ['black', 'white'],
+        enum: ['red', 'yellow', 'white', 'blue', 'green', 'orange', 'pink', 'grey', 'black', 'brown', 'purple'],
+        required: [true, 'Car must have color'],
     },
     special: {
         // đặc điểm chức năng đặc biệt
         type: String,
     },
 });
+
+carSchema.index({ '$**': 'text' });
 
 const Car = mongoose.model('Car', carSchema);
 module.exports = Car;

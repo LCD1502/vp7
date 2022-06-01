@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
     active: {
         type: Boolean,
         default: true,
-        select: false,
+        //select: false,
     },
     info: {
         address: {
@@ -57,7 +57,6 @@ const userSchema = new mongoose.Schema({
         },
         dateOfBirth: {
             type: Date,
-            required: [true, 'Please enter your birth date'],
         },
         gender: {
             type: String,
@@ -73,7 +72,11 @@ const userSchema = new mongoose.Schema({
                 ref: 'Accessory',
             },
             quantity: Number,
-        }
+            color: {
+                type: String,
+                enum: ['red', 'yellow', 'white', 'blue', 'green', 'orange', 'pink', 'grey', 'black', 'brown', 'purple'],
+            },
+        },
     ],
     wishList: {
         cars: [
@@ -104,6 +107,20 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, 12);
     //delete passwordConfirmation field
     this.passwordConfirmation = undefined;
+    next();
+});
+
+userSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'cart.itemId',
+        select: '_id price name image.avatar description',
+    })
+        .populate({
+            path: 'wishList.cars',
+        })
+        .populate({
+            path: 'wishList.accessories',
+        });
     next();
 });
 

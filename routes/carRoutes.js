@@ -4,11 +4,6 @@ const router = express.Router();
 const carControllers = require('../controllers/carControllers');
 const authControllers = require('../controllers/authControllers');
 
-router.use((req, res, next) => {
-    console.log('Time: ', Date.now());
-    next();
-});
-
 router.get('/', carControllers.getAllCars);
 router.get('/carFilter', carControllers.carFilter);
 router.get('/:carId', carControllers.getOneCar);

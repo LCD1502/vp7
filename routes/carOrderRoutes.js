@@ -4,11 +4,6 @@ const router = express.Router();
 const carOrderControllers = require('../controllers/carOrderController');
 const authControllers = require('../controllers/authControllers');
 
-router.use((req, res, next) => {
-    console.log('time: ', Date.now());
-    next();
-});
-
 router.get(
     '/',
     authControllers.protect,

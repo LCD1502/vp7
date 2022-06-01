@@ -26,7 +26,7 @@ const accessoryBillSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['Pending','Accepted', 'Success', 'Cancelled'],
+            enum: ['Pending', 'Accepted', 'Success', 'Cancelled'],
             default: 'Pending',
             required: [true, 'Accessory bill must have status'],
         },
@@ -41,12 +41,12 @@ const accessoryBillSchema = new mongoose.Schema(
 accessoryBillSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'accessoryInfo.itemId',
-        select:'-image.banner -image.gallery -color',
+        select: '-image.banner -image.gallery -color',
         // populate: {
         //     path: 'itemId',
         //     model: 'Accessory',
         // },
-    })
+    });
     // .populate({
     //     path: 'userId',
     //     select:'-wishList -cart -photo',

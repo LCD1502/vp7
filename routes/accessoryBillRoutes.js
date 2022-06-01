@@ -4,11 +4,6 @@ const router = express.Router();
 const accessoryBillControllers = require('../controllers/accessoryBillControllers');
 const authControllers = require('../controllers/authControllers');
 
-router.use((req, res, next) => {
-    console.log('Time: ', Date.now());
-    next();
-});
-
 //user get and create bill
 router.get(
     '/',

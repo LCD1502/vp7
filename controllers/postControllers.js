@@ -30,7 +30,7 @@ exports.createOnePost = catchAsync(async (req, res, next) => {
     //res.json('sussess')
     const { id } = req.user; // lấy user từ request sau khi giải token từ middleware
     const post = await Post.create({ ...req.body, author: id });
-    res.status(200).json({
+    res.status(201).json({
         status: 'success',
         data: post,
     });

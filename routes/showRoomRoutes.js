@@ -4,11 +4,6 @@ const router = express.Router();
 const showRoomControllers = require('../controllers/showRoomControllers');
 const authControllers = require('../controllers/authControllers');
 
-router.use((req, res, next) => {
-    console.log('Time: ', Date.now());
-    next();
-});
-
 router.get('/', showRoomControllers.getAllShowRooms);
 router.get('/:showRoomId', showRoomControllers.getOneShowRoom);
 router.post(

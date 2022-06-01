@@ -27,7 +27,17 @@ exports.createCarOrder = catchAsync(async (req, res, next) => {
         deposit: req.body.deposit,
         phone: req.body.phone,
         note: req.body.note,
-    });
+    })
+        .populate({
+            path: 'userInfo',
+            select: '-wishList -cart',
+        })
+        .populate({
+            path: 'carInfo',
+        })
+        .populate({
+            path: 'place',
+        });
     if (!carOrder) return next(new AppError('Create car order failed', 421));
     //giảm số lượng xe trong kho
     const car = await Car.findByIdAndUpdate(
@@ -36,7 +46,7 @@ exports.createCarOrder = catchAsync(async (req, res, next) => {
         { new: true, runValidator: true }
     );
     if (!car) return next(new AppError('decrease car amount failed', 421));
-    res.status(200).json({
+    res.status(201).json({
         status: 'success',
         message: 'Create car order successfully',
         carOrder,
@@ -65,6 +75,7 @@ exports.getCarOrderDetail = catchAsync(async (req, res, next) => {
 });
 
 exports.updateCarOrder = catchAsync(async (req, res, next) => {
+    console.log(req.params.carOrderId);
     const carOrder = await CarOrder.findByIdAndUpdate(
         req.params.carOrderId,
         {

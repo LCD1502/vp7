@@ -16,7 +16,7 @@ const accessorySchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['glass', 'wheel', 'phone holder', 'gadget', 'power bank', 'wireless', 'charger', 'trunk', 'engine', 'cover', 'cleanning', 'mats', 'shield', 'seat cover', 'other'],
+        enum: ['glass', 'wheel', 'phone holder', 'seat', 'gadget', 'power bank', 'wireless', 'charger', 'trunk', 'engine', 'cover', 'cleanning', 'mats', 'shield', 'seat cover', 'other'],
         default: 'other',
         //required: [true, 'Accessory must have type'],
     },
@@ -44,6 +44,7 @@ const accessorySchema = new mongoose.Schema({
     color: {
         type: [String],
         enum: ['red', 'yellow', 'white', 'blue', 'green', 'orange', 'pink', 'grey', 'black', 'brown', 'purple'],
+        default: 'black',
     },
 });
 

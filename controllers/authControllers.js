@@ -55,6 +55,8 @@ exports.logIn = catchAsync(async (req, res, next) => {
     }).select('+password');
     if (!user) return next(new AppError('Incorrect email ', 401));
     if (!(await user.correctPassword(password, user.password))) return next(new AppError('Incorrect password', 401));
+    //check user is active or not
+    if (!user.active) return next(new AppError('This user is not active', 401));
     // // 3) if everything is ok, send token to client
     createAndSendToken(user, 200, res);
 });

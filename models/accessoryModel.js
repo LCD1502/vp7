@@ -16,9 +16,9 @@ const accessorySchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['glass', 'wheel', 'none'],
-        default: 'none',
-        required: [true, 'Accessory must have type'],
+        enum: ['glass', 'wheel', 'gadget', 'power bank', 'wireless', 'charger', 'trunk', 'engine', 'cover', 'cleanning', 'mats', 'shield', 'seat cover' 'other'],
+        default: 'other',
+        //required: [true, 'Accessory must have type'],
     },
     image: {
         avatar: { type: String, required: [true, 'Accessory must have avatar'] },

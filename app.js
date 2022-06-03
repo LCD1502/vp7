@@ -3,6 +3,13 @@ const morgan = require('morgan');
 var cors = require('cors');
 
 const app = express();
+const rateLimit = require('express-rate-limit'); //limit request from an IP address
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xssClean = require('xss-clean');
+const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
+
 const userRoutes = require('./routes/userRoutes');
 const carRoutes = require('./routes/carRoutes'); //hiep add carRoutes
 const postRoutes = require('./routes/postRoutes'); //hiep add postRoutes
@@ -27,8 +34,49 @@ app.all('/', function (req, res, next) {
     next();
 });
 
+// Set Security HTTP headers
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'", 'https:', 'http:', 'data:', 'ws:'],
+            baseUri: ["'self'"],
+            fontSrc: ["'self'", 'https:', 'http:', 'data:'],
+            scriptSrc: ["'self'", 'https:', 'http:', 'blob:'],
+            styleSrc: ["'self'", "'unsafe-inline'", 'https:', 'http:'],
+            imgSrc: ["'self'", 'data:', 'blob:'],
+        },
+    })
+);
+
+// limit request come from an IP address
+const limiter = rateLimit({
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too many request from this IP, Please try again in an hour',
+});
+
+app.use('/api', limiter);
+
+//Body parse, reading data from body into req.body
+app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
+
+// Data sanitization against NoSQL query injection
+// for example: client dont send email, but they send { "$gt": "" }, its ALWAYS TRUE, so they can login with no email
+// now we use express-mongo-sanitize, but we can use SANITIZE-HTML
+app.use(mongoSanitize());
+
+//Data sanitization against XSS
+// it trans html code to another characters
+app.use(xssClean());
+
+// Prevent parameter pollution
+// app.use(
+//     hpp()
+// );
+
 app.get('/', (req, res) => {
-    res.send('cap nhat server');
+    res.send('Seven Group');
 });
 
 app.use('/api/v1/user', userRoutes);

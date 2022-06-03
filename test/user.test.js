@@ -43,7 +43,7 @@ describe('---------User Authentication Testing----------', () => {
         chai.request(server)
             .post('/api/v1/user/logIn')
             .send({
-                email: 'chai-testing@gmail.com',
+                email: 'chai-testing2@gmail.com',
                 password: '12345678',
             })
             .end((err, res) => {

@@ -5,10 +5,14 @@ const APIFeatures = require('../utils/apiFeatures');
 
 exports.getAllCars = catchAsync(async (req, res, next) => {
     const car = await Car.find({}); //.select('-image.gallery'); //.populate('author','name').select('content createdAt');
+    const models = await Car.distinct('model');
+    const years = await Car.distinct('year');
     res.status(200).json({
         status: 'success',
         results: car.length,
         data: { car },
+        models,
+        years,
     });
 });
 
